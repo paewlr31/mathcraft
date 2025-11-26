@@ -1,0 +1,11 @@
+serwer:
+ide do folderu
+npm run dev 
+
+npm i -D daisyui@latest
+
+w obu .css:
+@import "tailwindcss";
+@plugin "daisyui";
+
+talwand+daisy+tsx+react
