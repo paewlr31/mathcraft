@@ -3,23 +3,24 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { supabase } from '../../lib/supabaseClient'
 import AuthLayout from './AuthLayout'
+import { Eye, EyeOff } from 'lucide-react'  // ← dodaj lucide-react jeśli jeszcze nie masz
 
 export default function UpdatePassword() {
   const [password, setPassword] = useState('')
   const [password2, setPassword2] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
+  const [showPassword2, setShowPassword2] = useState(false)
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState<string | null>('Ładowanie...')
   const navigate = useNavigate()
 
   useEffect(() => {
-    // KLUCZOWA RZECZ – pobieramy access_token z URL-a!
     const hash = window.location.hash
     const params = new URLSearchParams(hash.replace('#', ''))
     const accessToken = params.get('access_token')
     const type = params.get('type')
 
     if (type === 'recovery' && accessToken) {
-      // Ręcznie ustawiamy sesję!
       supabase.auth.setSession({
         access_token: accessToken,
         refresh_token: params.get('refresh_token') || '',
@@ -34,7 +35,6 @@ export default function UpdatePassword() {
       setMessage('Nieprawidłowy link resetujący hasło')
     }
 
-    // Czyścimy URL (żeby nie było brzydkiego #access_token=...)
     window.history.replaceState({}, '', window.location.pathname)
   }, [])
 
@@ -68,41 +68,66 @@ export default function UpdatePassword() {
     <AuthLayout title="Zmień hasło">
       <div className="max-w-md mx-auto">
         <form onSubmit={handleUpdate} className="space-y-6">
+
           <div className="text-center mb-8">
             <h2 className="text-3xl font-bold text-gray-800">Nowe hasło</h2>
-            <p className="text-gray-600 mt-2">Wprowadź nowe hasło do swojego konta</p>
+            <p className="text-gray-600 mt-2">Wprowadź nowe, bezpieczne hasło do swojego konta</p>
           </div>
 
+          {/* Nowe hasło */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Nowe hasło
             </label>
-            <input
-              type="password"
-              required
-              minLength={8}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-blue-600"
-              placeholder="Minimum 8 znaków"
-            />
+            <div className="relative">
+              <input
+                type={showPassword ? 'text' : 'password'}
+                required
+                minLength={8}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-blue-600"
+                placeholder="Minimum 8 znaków"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute inset-y-0 right-0 flex items-center pr-4 text-gray-500 hover:text-gray-700"
+              >
+                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
+            </div>
+            <p className="mt-2 text-xs text-gray-500">
+              Min. 8 znaków • duża i mała litera • cyfra • znak specjalny (@ $ ! % * ? & +)
+            </p>
           </div>
 
+          {/* Powtórz nowe hasło */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Powtórz nowe hasło
             </label>
-            <input
-              type="password"
-              required
-              minLength={8}
-              value={password2}
-              onChange={(e) => setPassword2(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-blue-600"
-              placeholder="Powtórz hasło"
-            />
+            <div className="relative">
+              <input
+                type={showPassword2 ? 'text' : 'password'}
+                required
+                minLength={8}
+                value={password2}
+                onChange={(e) => setPassword2(e.target.value)}
+                className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-blue-600"
+                placeholder="Powtórz hasło"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword2(!showPassword2)}
+                className="absolute inset-y-0 right-0 flex items-center pr-4 text-gray-500 hover:text-gray-700"
+              >
+                {showPassword2 ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
+            </div>
           </div>
 
+          {/* Komunikat */}
           {message && (
             <div className={`p-4 rounded-lg text-center font-medium ${
               message.includes('zmienione') || message.includes('Wpisz')
@@ -113,6 +138,7 @@ export default function UpdatePassword() {
             </div>
           )}
 
+          {/* Przycisk */}
           <button
             type="submit"
             disabled={loading || message?.includes('Link wygasł')}

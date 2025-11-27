@@ -50,7 +50,7 @@ export default function ResetPassword() {
             autoFocus
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+            className="mt-1 block w-full px-4 py-3 border  text-gray-700 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent"
             placeholder="twoj@email.pl"
           />
         </div>
