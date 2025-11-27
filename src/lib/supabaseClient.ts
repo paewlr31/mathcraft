@@ -1,6 +1,12 @@
-import { createClient } from '@supabase/supabase-js';
+// src/lib/supabaseClient.ts
+import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+// Ważne: zmienne muszą się zaczynać od VITE_
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+if (!supabaseUrl || !supabaseAnonKey) {
+  throw new Error('Brakuje zmiennych środowiskowych Supabase! Sprawdź .env.local')
+}
+
+export const supabase = createClient(supabaseUrl, supabaseAnonKey)

@@ -1,21 +1,56 @@
 // src/pages/Home.tsx
 import { useState, useRef, useEffect } from 'react';
-import { ChevronDown, Menu, X, Phone, Mail, Facebook, Instagram, ChevronLeft, ChevronRight } from 'lucide-react';
+import {
+  ChevronDown,
+  Menu,
+  X,
+  Phone,
+  Mail,
+  Facebook,
+  Instagram,
+  ChevronLeft,
+  ChevronRight,
+  LogOut,
+  User,
+} from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { supabase } from '../lib/supabaseClient';
 
 export default function Home() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
   const [currentSlide, setCurrentSlide] = useState(0);
-
-  // Responsywna liczba kart widocznych naraz
   const [itemsPerView, setItemsPerView] = useState(1);
 
+  // Auth state
+  const [session, setSession] = useState<any>(null);
+  const [userEmail, setUserEmail] = useState<string>('');
+  const navigate = useNavigate();
+
+  // Pobieranie sesji przy załadowaniu strony
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      setUserEmail(session?.user?.email || '');
+    });
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+      setUserEmail(session?.user?.email || '');
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  // Responsywna karuzela
   useEffect(() => {
     const updateItemsPerView = () => {
       const newVal = window.innerWidth >= 768 ? 3 : 1;
       if (newVal !== itemsPerView) {
         setItemsPerView(newVal);
-        setCurrentSlide(newVal); // reset do pierwszego prawdziwego slajdu po klonach
+        setCurrentSlide(newVal);
       }
     };
 
@@ -26,36 +61,29 @@ export default function Home() {
 
   const courses = [
     { title: "Matematyka Rozszerzona", desc: "Pełny kurs maturalny na 100% – poziom rozszerzony", img: "https://images.unsplash.com/photo-1509228628319-2b2cc7d1f58a?q=80&w=800" },
-    { title: "Matematyka Podstawowa", desc: "Solidne przygotowanie do matury na poziomie podstawowym", img: "https://images.unsplash.com/photo-1454165804606-c3d57bc1ebde?q=80&w=800" },
+    { title: "Matematyka Podstawowa", desc: "Solidne przygotowanie do matury na poziomie podstawowym", img: "https://images.unsplash.com/photo-1454165804606-c3d57bc1f58de?q=80&w=800" },
     { title: "Matematyka IB SL/HL", desc: "Kurs do matury międzynarodowej – Standard i Higher Level", img: "https://images.unsplash.com/photo-1526379095098-d400fd0bf935?q=80&w=800" },
     { title: "Korepetycje indywidualne", desc: "Zajęcia 1-na-1 dostosowane dokładnie do Twoich potrzeb", img: "https://images.unsplash.com/photo-1517248135467-2c7ed3f9e270?q=80&w=800" },
   ];
 
-  // Klonujemy slajdy na początek i koniec → nieskończone kółko bez skoku
   const extendedCourses = [
     ...courses.slice(-itemsPerView),
     ...courses,
-    ...courses.slice(0, itemsPerView)
+    ...courses.slice(0, itemsPerView),
   ];
 
   const nextSlide = () => {
-    setCurrentSlide(prev => {
+    setCurrentSlide((prev) => {
       const next = prev + 1;
-      // Jeśli dotarliśmy do końca klonów → skaczemy dyskretnie na początek prawdziwych
-      if (next >= courses.length + itemsPerView) {
-        return itemsPerView; // wracamy na początek (po klonach z przodu)
-      }
+      if (next >= courses.length + itemsPerView) return itemsPerView;
       return next;
     });
   };
 
   const prevSlide = () => {
-    setCurrentSlide(prev => {
+    setCurrentSlide((prev) => {
       const next = prev - 1;
-      // Jeśli jesteśmy przed pierwszymi klonami → skaczemy na koniec
-      if (next < itemsPerView) {
-        return courses.length; // ostatni prawdziwy slajd
-      }
+      if (next < itemsPerView) return courses.length;
       return next;
     });
   };
@@ -75,32 +103,87 @@ export default function Home() {
     setIsMenuOpen(false);
   };
 
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    setIsMenuOpen(false);
+    navigate('/');
+  };
+
+  const AuthButtons = () => (
+    !session ? (
+      <>
+        <Link to="/login" className="btn btn-outline btn-sm" onClick={() => setIsMenuOpen(false)}>
+          Logowanie
+        </Link>
+        <Link to="/register" className="btn btn-primary btn-sm" onClick={() => setIsMenuOpen(false)}>
+          Rejestracja
+        </Link>
+      </>
+    ) : (
+      <>
+        <Link to="/dashboard" className="btn btn-primary btn-sm" onClick={() => setIsMenuOpen(false)}>
+          Panel
+        </Link>
+        <button onClick={handleLogout} className="btn btn-outline btn-sm flex items-center gap-2">
+          <LogOut size={16} /> Wyloguj
+        </button>
+      </>
+    )
+  );
+
   return (
     <>
       {/* Navbar */}
       <div className="fixed top-0 left-0 right-0 bg-white shadow-md z-50">
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-blue-700">MATHCRAFT.PL</h1>
+          <Link to="/" className="text-2xl font-bold text-blue-700">
+            MATHCRAFT.PL
+          </Link>
 
+          {/* Desktop */}
           <div className="hidden md:flex gap-8 items-center">
-            <button onClick={() => scrollToSection(sections.dlaczego)} className="hover:text-blue-600 transition">Kursy</button>
-            <button onClick={() => scrollToSection(sections.korepetycje)} className="hover:text-blue-600 transition">Korepetycje</button>
-            <button onClick={() => scrollToSection(sections.forum)} className="hover:text-blue-600 transition">Forum</button>
-            <button className="btn btn-primary btn-sm">Logowanie/Rejestracja</button>
+            <button onClick={() => scrollToSection(sections.dlaczego)} className="hover:text-blue-600 transition">
+              Kursy
+            </button>
+            <button onClick={() => scrollToSection(sections.korepetycje)} className="hover:text-blue-600 transition">
+              Korepetycje
+            </button>
+            <button onClick={() => scrollToSection(sections.forum)} className="hover:text-blue-600 transition">
+              Forum
+            </button>
+            <div className="flex gap-3">
+              <AuthButtons />
+            </div>
           </div>
 
+          {/* Mobile hamburger */}
           <button className="md:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-            {isMenuOpen ? <X size={28} color="#1D4ED8" /> : <Menu size={28} color="#1D4ED8"/>}
+            {isMenuOpen ? <X size={28} color="#1D4ED8" /> : <Menu size={28} color="#1D4ED8" />}
           </button>
         </div>
 
+        {/* Mobile menu */}
         {isMenuOpen && (
           <div className="md:hidden bg-white border-t">
-            <div className="flex flex-col  text-gray-700 gap-4 p-6">
-              <button onClick={() => scrollToSection(sections.dlaczego)} className="text-left  text-gray-700 text-lg">Kursy</button>
-              <button onClick={() => scrollToSection(sections.korepetycje)} className="text-left  text-gray-700 text-lg">Korepetycje</button>
-              <button onClick={() => scrollToSection(sections.forum)} className="text-left  text-gray-700 text-lg">Forum</button>
-              <button className="btn btn-primary">Logowanie/Rejestracja</button>
+            <div className="flex flex-col gap-5 p-6 text-gray-700">
+              {session && (
+                <div className="flex items-center gap-3 pb-3 border-b border-gray-200">
+                  <User size={20} />
+                  <span className="font-medium text-sm">{userEmail}</span>
+                </div>
+              )}
+              <div className="flex gap-3 pb-4 border-b border-gray-200">
+                <AuthButtons />
+              </div>
+              <button onClick={() => scrollToSection(sections.dlaczego)} className="text-left text-lg">
+                Kursy
+              </button>
+              <button onClick={() => scrollToSection(sections.korepetycje)} className="text-left text-lg">
+                Korepetycje
+              </button>
+              <button onClick={() => scrollToSection(sections.forum)} className="text-left text-lg">
+                Forum
+              </button>
             </div>
           </div>
         )}
@@ -109,8 +192,12 @@ export default function Home() {
       {/* Hero */}
       <section ref={sections.home} className="relative h-screen flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-linear-to-b from-black/60 to-black/40 z-10"></div>
-        <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=1932&auto=format&fit=crop" alt="Hero" className="absolute inset-0 w-full h-full object-cover" />
-        
+        <img
+          src="https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=1932&auto=format&fit=crop"
+          alt="Hero"
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+
         <div className="relative z-20 text-center text-white px-6 max-w-4xl">
           <h1 className="text-5xl md:text-7xl font-bold mb-6">Korepetycje i kursy maturalne</h1>
           <p className="text-xl md:text-2xl mb-12">
@@ -118,9 +205,15 @@ export default function Home() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-6 justify-center">
-            <button onClick={() => scrollToSection(sections.korepetycje)} className="btn btn-lg btn-primary">Korepetycje</button>
-            <button onClick={() => scrollToSection(sections.kursy)} className="btn btn-lg btn-outline border-white text-white hover:bg-white hover:text-black">Egzaminy – kursy</button>
-            <button onClick={() => scrollToSection(sections.kursy)} className="btn btn-lg btn-secondary">Kursy IB Matematyka</button>
+            <button onClick={() => scrollToSection(sections.korepetycje)} className="btn btn-lg btn-primary">
+              Korepetycje
+            </button>
+            <button onClick={() => scrollToSection(sections.kursy)} className="btn btn-lg btn-outline border-white text-white hover:bg-white hover:text-black">
+              Egzaminy – kursy
+            </button>
+            <button onClick={() => scrollToSection(sections.kursy)} className="btn btn-lg btn-secondary">
+              Kursy IB Matematyka
+            </button>
           </div>
         </div>
 
@@ -131,20 +224,20 @@ export default function Home() {
 
       {/* Dlaczego my? */}
       <section ref={sections.dlaczego} className="py-20 bg-gray-50">
-        <div className="max-w-7xl  text-gray-700 mx-auto px-6">
-          <h2 className="text-4xl  text-gray-700 md:text-5xl font-bold text-center mb-12">Dlaczego stworzyliśmy nasze kursy?</h2>
-          <p className="text-xl text-center text-gray-700 max-w-4xl mx-auto mb-16">
+        <div className="max-w-7xl mx-auto px-6 text-gray-700">
+          <h2 className="text-4xl md:text-5xl font-bold text-center mb-12">Dlaczego stworzyliśmy nasze kursy?</h2>
+          <p className="text-xl text-center max-w-4xl mx-auto mb-16">
             Przygotowania do egzaminów mogą być przytłaczające — szczególnie gdy nie wiesz, od czego zacząć. Nasze kursy powstały po to, by pomóc Ci uporządkować materiał i krok po kroku przybliżać się do celu: dostania się na wymarzone studia!
           </p>
 
           <div className="grid md:grid-cols-3 gap-10">
             {[
-              { title: "Korzystna Cena", icon: "💸" },
-              { title: "Darmowa lekcja próbna", icon: "🎁" },
-              { title: "Nowoczesne Metody Nauki", icon: "🚀" },
-              { title: "Zgodność z Podstawą", icon: "✅" },
-              { title: "Dostęp do nagrań", icon: "🎥" },
-              { title: "Dzielenie płatności", icon: "💳" },
+              { title: "Korzystna Cena", icon: "Money" },
+              { title: "Darmowa lekcja próbna", icon: "Gift" },
+              { title: "Nowoczesne Metody Nauki", icon: "Rocket" },
+              { title: "Zgodność z Podstawą", icon: "Check" },
+              { title: "Dostęp do nagrań", icon: "Camera" },
+              { title: "Dzielenie płatności", icon: "Credit Card" },
             ].map((item, i) => (
               <div key={i} className="bg-white p-8 rounded-2xl shadow-lg text-center hover:shadow-xl transition">
                 <div className="text-6xl mb-4">{item.icon}</div>
@@ -155,7 +248,7 @@ export default function Home() {
         </div>
       </section>
 
-            {/* Korepetycje – NOWA CZERWONA WERSJA – WYGLĄDA JAK Z TOP STRONY */}
+      {/* Korepetycje czerwona */}
       <section ref={sections.korepetycje} className="py-24 bg-linear-to-br from-red-800 via-red-700 to-red-900 text-white">
         <div className="max-w-7xl mx-auto px-6 text-center">
           <h2 className="text-4xl md:text-6xl font-black mb-6 drop-shadow-lg">
@@ -165,7 +258,6 @@ export default function Home() {
             Już od <span className="text-5xl md:text-6xl text-yellow-400">70 zł</span>/60 min!
           </p>
 
-          {/* Karty na białym tle – super kontrast */}
           <div className="grid md:grid-cols-3 gap-10 max-w-5xl mx-auto mb-16">
             <div className="bg-white text-gray-900 p-10 rounded-3xl shadow-2xl transform hover:scale-105 transition duration-300">
               <h3 className="text-2xl md:text-3xl font-bold mb-4 text-red-600">Szkoła podstawowa</h3>
@@ -181,7 +273,6 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Kontakt */}
           <div className="flex flex-col sm:flex-row gap-8 md:gap-12 justify-center items-center text-xl md:text-2xl font-bold mb-12">
             <a href="mailto:kontakt.mathcraft@gmail.com" className="flex items-center gap-4 hover:text-yellow-300 transition">
               <Mail size={36} />
@@ -193,44 +284,30 @@ export default function Home() {
             </a>
           </div>
 
-          {/* Przycisk – mocny! */}
           <button className="btn btn-lg bg-white text-red-600 hover:bg-yellow-400 hover:text-red-700 font-bold text-xl px-12 py-6 shadow-2xl transform hover:scale-105 transition">
             Umów się na darmową lekcję próbną!
           </button>
-
-          <p className="mt-6 text-lg opacity-90">
-            Napisz lub zadzwoń – odpowiemy w ciągu 30 minut!
-          </p>
+          <p className="mt-6 text-lg opacity-90">Napisz lub zadzwoń – odpowiemy w ciągu 30 minut!</p>
         </div>
       </section>
 
-      {/* KARUZELA – DZIAŁA IDEALNIE W KÓŁKO */}
+      {/* Karuzela kursów */}
       <section ref={sections.kursy} className="py-20 bg-gray-100">
         <div className="max-w-7xl mx-auto px-6">
-          <h2 className="text-4xl  text-gray-700 md:text-5xl font-bold text-center mb-16">Nasze kursy</h2>
+          <h2 className="text-4xl md:text-5xl font-bold text-center mb-16 text-gray-700">Nasze kursy</h2>
 
           <div className="relative">
             <div className="overflow-hidden rounded-2xl">
               <div
                 className="flex transition-transform duration-700 ease-in-out"
-                style={{
-                  transform: `translateX(-${currentSlide * (100 / itemsPerView)}%)`,
-                }}
+                style={{ transform: `translateX(-${currentSlide * (100 / itemsPerView)}%)` }}
               >
                 {extendedCourses.map((course, i) => (
-                  <div
-                    key={i}
-                    className="shrink-0 px-4"
-                    style={{ width: `${100 / itemsPerView}%` }}
-                  >
+                  <div key={i} className="shrink-0 px-4" style={{ width: `${100 / itemsPerView}%` }}>
                     <div className="bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-all">
-                      <img
-                        src={course.img}
-                        alt={course.title}
-                        className="w-full h-64 object-cover"
-                      />
+                      <img src={course.img} alt={course.title} className="w-full h-64 object-cover" />
                       <div className="p-8">
-                        <h3 className="text-2xl text-gray-600  font-bold mb-3">{course.title}</h3>
+                        <h3 className="text-2xl font-bold mb-3 text-gray-800">{course.title}</h3>
                         <p className="text-gray-600 mb-6">{course.desc}</p>
                         <button className="btn btn-primary w-full">Dowiedz się więcej</button>
                       </div>
@@ -240,28 +317,26 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Strzałki */}
             <button
               onClick={prevSlide}
-              className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-4 rounded-full shadow-2xl transition z-10"
+              className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-4 rounded-full shadow-2xl z-10"
             >
               <ChevronLeft size={32} />
             </button>
             <button
               onClick={nextSlide}
-              className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-4 rounded-full shadow-2xl transition z-10"
+              className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white p-4 rounded-full shadow-2xl z-10"
             >
               <ChevronRight size={32} />
             </button>
 
-            {/* Kropki tylko na mobile */}
             {itemsPerView === 1 && (
               <div className="flex justify-center gap-3 mt-8">
                 {courses.map((_, i) => (
                   <button
                     key={i}
                     onClick={() => setCurrentSlide(i + itemsPerView)}
-                    className={`transition-all duration-300 rounded-full ${
+                    className={`transition-all rounded-full ${
                       (currentSlide - itemsPerView + courses.length) % courses.length === i
                         ? 'bg-blue-600 w-10 h-3'
                         : 'bg-gray-300 w-3 h-3'
@@ -274,8 +349,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Reszta sekcji bez zmian */}
-      {/* Forum – CIEMNONIEBIESKA PREMIUM WERSJA */}
+      {/* Forum niebieskie */}
       <section ref={sections.forum} className="py-24 bg-linear-to-br from-blue-900 via-blue-800 to-indigo-900 text-white">
         <div className="max-w-4xl mx-auto text-center px-6">
           <h2 className="text-4xl md:text-6xl font-black mb-8 drop-shadow-lg">
@@ -285,13 +359,10 @@ export default function Home() {
             Setki rozwiązanych zadań maturalnych, porady od innych maturzystów, wsparcie 24/7 i zero ściemy – tylko konkretna pomoc!
           </p>
 
-          <button className="btn btn-lg bg-white text-blue-900 hover:bg-cyan-400 hover:text-blue-950 font-bold text-xl px-12 py-6 shadow-2xl transform hover:scale-105 transition">
+          <button className="btn btn-lg bg-white text-blue-900 hover:bg-cyan-400 hover:text-blue-950 font-bold text-xl px-6 shadow-2xl transform hover:scale-105 transition">
             Wejdź na forum teraz!
           </button>
-
-          <p className="mt-6 text-lg opacity-80">
-            Już ponad 3 200 uczniów korzysta codziennie
-          </p>
+          <p className="mt-6 text-lg opacity-80">Już ponad 3 200 uczniów korzysta codziennie</p>
         </div>
       </section>
 
@@ -317,7 +388,7 @@ export default function Home() {
         </div>
       </section>
 
-            {/* FAQ – ZIELONA PREMIUM WERSJA */}
+      {/* FAQ zielone */}
       <section ref={sections.faq} className="py-24 bg-linear-to-br from-emerald-800 via-green-700 to-teal-900 text-white">
         <div className="max-w-4xl mx-auto px-6">
           <h2 className="text-4xl md:text-6xl font-black text-center mb-16 drop-shadow-lg">
@@ -340,14 +411,10 @@ export default function Home() {
                   className="w-full px-8 py-7 text-left flex justify-between items-center hover:bg-white/10 transition-all duration-300"
                   onClick={() => setActiveFaq(activeFaq === i ? null : i)}
                 >
-                  <span className="text-xl md:text-2xl font-bold pr-4">
-                    {item.q}
-                  </span>
+                  <span className="text-xl md:text-2xl font-bold pr-4">{item.q}</span>
                   <ChevronDown
                     size={32}
-                    className={`transition-transform duration-300 shrink-0 ${
-                      activeFaq === i ? 'rotate-180' : ''
-                    }`}
+                    className={`transition-transform duration-300 shrink-0 ${activeFaq === i ? 'rotate-180' : ''}`}
                   />
                 </button>
                 {activeFaq === i && (
@@ -366,6 +433,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+
       {/* Footer */}
       <footer className="bg-gray-900 text-white py-16">
         <div className="max-w-7xl mx-auto px-6">
@@ -385,9 +453,7 @@ export default function Home() {
               <h4 className="text-xl font-bold mb-4">Prawne</h4>
               <div className="space-y-2">
                 <a href="/assets/documents/polityka_prywatnosci.pdf" className="block hover:text-gray-400">Polityka prywatności</a>
-                <a href="/assets/documents/regulamin.pdf"  className="block hover:text-gray-400">
-  Regulamin
-</a>
+                <a href="/assets/documents/regulamin.pdf" className="block hover:text-gray-400">Regulamin</a>
               </div>
             </div>
           </div>
