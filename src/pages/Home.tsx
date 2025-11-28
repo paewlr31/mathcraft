@@ -1,5 +1,5 @@
 // src/pages/Home.tsx
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, use } from 'react';
 import { ChevronDown, Menu, X, Phone, Mail, Facebook, Instagram, ChevronLeft, ChevronRight, LogOut, ArrowRight } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabaseClient';
@@ -67,6 +67,7 @@ export default function Home() {
 
   const sections = {
     home: useRef<HTMLDivElement | null>(null),
+    bazaWiedzy: useRef<HTMLDivElement | null>(null),
     dlaczego: useRef<HTMLDivElement | null>(null),
     korepetycje: useRef<HTMLDivElement | null>(null),
     kursy: useRef<HTMLDivElement | null>(null),
@@ -93,6 +94,7 @@ export default function Home() {
           <h1 className="text-2xl font-bold text-blue-700">MATHCRAFT.PL</h1>
 
           <div className="hidden md:flex gap-8 items-center">
+            <button onClick={() => scrollToSection(sections.bazaWiedzy)} className="hover:text-blue-600 transition">Baza Wiedzy</button>
             <button onClick={() => scrollToSection(sections.dlaczego)} className="hover:text-blue-600 transition">Kursy</button>
             <button onClick={() => scrollToSection(sections.korepetycje)} className="hover:text-blue-600 transition">Korepetycje</button>
             <button onClick={() => scrollToSection(sections.forum)} className="hover:text-blue-600 transition">Forum</button>
@@ -127,6 +129,7 @@ export default function Home() {
         {isMenuOpen && (
           <div className="md:hidden  text-gray-700 bg-white border-t">
             <div className="flex flex-col gap-5 p-6 text-lg">
+              <button onClick={() => scrollToSection(sections.bazaWiedzy)}>Baza Wiedzy</button>
               <button onClick={() => scrollToSection(sections.dlaczego)}>Kursy</button>
               <button onClick={() => scrollToSection(sections.korepetycje)}>Korepetycje</button>
               <button onClick={() => scrollToSection(sections.forum)}>Forum</button>
@@ -165,6 +168,22 @@ export default function Home() {
         </div>
         <div className="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce">
           <ChevronDown size={40} className="text-white" />
+        </div>
+      </section>
+      {/* Baza Wiedzy */}
+      <section ref={sections.bazaWiedzy} className="py-24 bg-linear-to-br from-yellow-800 via-yellow-600 to-yellow-400 text-white">
+        <div className="max-w-4xl mx-auto text-center px-6">
+          <h2 className="text-4xl md:text-6xl font-black mb-8 drop-shadow-lg">Odkryj naszą Bazę Wiedzy!</h2>
+          <p className="text-xl md:text-2xl mb-12 font-medium opacity-90 max-w-3xl mx-auto">
+            Setki artykułów, poradników i materiałów edukacyjnych dostępnych dla każdego – ucz się w swoim tempie, bez logowania!
+          </p>
+          <button 
+            className="btn btn-lg bg-white text-green-900 hover:bg-cyan-400 hover:text-green-950 font-bold text-xl px-12 py-6 shadow-2xl transform hover:scale-105 transition"
+            onClick={() => navigate('/sharedPages/baza-wiedzy')}
+          >
+            Przejdź do Bazy Wiedzy
+          </button>
+          <p className="mt-6 text-lg opacity-80">Dostęp do materiałów dla wszystkich odwiedzających.</p>
         </div>
       </section>
 
@@ -267,7 +286,9 @@ export default function Home() {
           <p className="text-xl md:text-2xl mb-12 font-medium opacity-90 max-w-3xl mx-auto">
             Setki rozwiązanych zadań maturalnych, porady od innych maturzystów, wsparcie 24/7 i zero ściemy – tylko konkretna pomoc!
           </p>
-          <button className="btn btn-lg bg-white text-blue-900 hover:bg-cyan-400 hover:text-blue-950 font-bold text-xl px-12 py-6 shadow-2xl transform hover:scale-105 transition">
+          <button 
+          className="btn btn-lg bg-white text-blue-900 hover:bg-cyan-400 hover:text-blue-950 font-bold text-xl px-12 py-6 shadow-2xl transform hover:scale-105 transition"
+          onClick={() => navigate('/sharedPages/forum')}>
             Wejdź na forum teraz!
           </button>
           <p className="mt-6 text-lg opacity-80">Już ponad 3 200 uczniów korzysta codziennie</p>

@@ -29,6 +29,7 @@ import Chat from './pages/sharedPages/chat'
 import Umowy from './pages/sharedPages/umowy'
 import Przewodnik from './pages/sharedPages/przewodnik'
 import Forum from './pages/sharedPages/forum'
+import BazaWiedzy from './pages/sharedPages/baza-wiedzy'
 
 //student pages
 import Arkusze from './pages/student/arkusze' 
@@ -36,7 +37,7 @@ import KursyStudent from './pages/student/kursy'
 import Zadania from './pages/student/zadania'
 import Lekcje from './pages/student/lekcje'
 import Najwazniejsze from './pages/student/najwazniejsze'
-import BazaWiedzy from './pages/student/baza-wiedzy'
+
 
 //teacher pages
 import Uczniowie from './pages/teacher/uczniowie'
@@ -105,14 +106,16 @@ function App() {
       <Route path="/sharedPages/chat" element={session ? <Chat /> : <Navigate to="/login" />} />
       <Route path="/sharedPages/umowy" element={session ? <Umowy /> : <Navigate to="/login" />} />
       <Route path="/sharedPages/przewodnik" element={session ? <Przewodnik /> : <Navigate to="/login" />} />
-      <Route path="/sharedPages/forum" element={session ? <Forum /> : <Navigate to="/login" />} />
+      <Route path="/sharedPages/forum" element={<Forum />} />
+      <Route path="/sharedPages/baza-wiedzy" element={<BazaWiedzy />} />
+
         {/* student pages */}
       <Route path="/student/arkusze" element={session ? <Arkusze /> : <Navigate to="/login" />} />
       <Route path="/student/kursy" element={session ? <KursyStudent /> : <Navigate to="/login" />} />
       <Route path="/student/zadania" element={session ? <Zadania /> : <Navigate to="/login" />} />
       <Route path="/student/lekcje" element={session ? <Lekcje /> : <Navigate to="/login" />} />
       <Route path="/student/najwazniejsze" element={session ? <Najwazniejsze /> : <Navigate to="/login" />} />
-      <Route path="/student/baza-wiedzy" element={session ? <BazaWiedzy /> : <Navigate to="/login" />} />
+      
         {/* teacher pages */}
       <Route path="/teacher/uczniowie" element={session ? <Uczniowie /> : <Navigate to="/login" />} />
       <Route path="/teacher/kalendarz" element={session ? <Kalendarz /> : <Navigate to="/login" />} />

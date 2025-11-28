@@ -18,13 +18,13 @@ export default function Sidebar({ user, role, onLogout }: SidebarProps) {
     { name: 'Umowy', path: '/sharedPages/umowy' },
     { name: 'Przewodnik', path: '/sharedPages/przewodnik' },
     { name: 'Forum', path: '/sharedPages/forum' },
+    { name: 'Baza wiedzy', path: '/sharedPages/baza-wiedzy' },
   ];
 
   const studentMenu = [
     { name: 'Moje lekcje', path: '/student/lekcje' },
     { name: 'Moje kursy', path: '/student/kursy' },
     { name: 'Zadania domowe', path: '/student/zadania' },
-    { name: 'Baza wiedzy', path: '/student/baza-wiedzy' },
     { name: 'Arkusze maturalne', path: '/student/arkusze' },
     { name: 'Najważniejsze zadania', path: '/student/najwazniejsze' }
   ];
