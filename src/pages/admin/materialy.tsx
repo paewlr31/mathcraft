@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import { supabase } from '../lib/supabaseClient';
+import { supabase } from '../../lib/supabaseClient';
 import { useNavigate } from 'react-router-dom';
-import Sidebar from '../components/Sidebar';
+import Sidebar from '../../components/Sidebar';
 import type { User } from '@supabase/supabase-js';
 
-export default function Dashboard() {
+export default function Materialy() {
   const [user, setUser] = useState<User | null>(null);
   const [role, setRole] = useState<string>('');
   const navigate = useNavigate();
@@ -13,18 +13,14 @@ export default function Dashboard() {
     const getData = async () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return navigate('/login');
-
       setUser(user);
-
       const { data } = await supabase
         .from('profiles')
         .select('role')
         .eq('id', user.id)
         .single();
-
-      setRole(data?.role || 'STUDENT');
+      setRole(data?.role || 'ADMIN');
     };
-
     getData();
   }, []);
 
@@ -35,30 +31,11 @@ export default function Dashboard() {
 
   return (
     <div className="flex min-h-screen bg-gray-100">
-      {/* Sidebar */}
       <Sidebar user={user} role={role} onLogout={handleLogout} />
-
-      {/* Main content */}
       <main className="flex-1 p-6 md:ml-64">
         <div className="bg-white shadow rounded-lg p-6 md:p-8">
-          <h1 className="text-3xl font-bold text-blue-700 mb-4">Witaj w Mathcraft!</h1>
-
-          {user && (
-            <p className="text-lg  text-blue-800">Zalogowano jako: <strong>{user.email}</strong></p>
-          )}
-
-          <p className="text-lg mt-2  text-blue-800">
-            Twoja rola:
-            <span className="ml-2 px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
-              {role.toUpperCase()}
-            </span>
-          </p>
-
-          {role === 'ADMIN' && (
-            <div className="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded">
-              <p className="text-yellow-800 font-medium">Jesteś administratorem!</p>
-            </div>
-          )}
+          <h1 className="text-3xl font-bold text-blue-700 mb-4">Moderacja materiałów</h1>
+          <p className="text-lg text-blue-800">Tutaj możesz zarządzać materiałami edukacyjnymi.</p>
         </div>
       </main>
     </div>

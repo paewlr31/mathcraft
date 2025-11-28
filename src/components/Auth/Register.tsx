@@ -42,37 +42,45 @@ export default function Register() {
       return
     }
 
-    supabase.auth
-      .signUp({
+    try {
+      const { data, error } = await supabase.auth.signUp({
         email: email.trim(),
         password,
         options: {
           emailRedirectTo: `${window.location.origin}/dashboard`,
         },
       })
-      .then(({ data, error }) => {
-        if (error) {
-          if (error.message.includes('User already registered') || error.message.includes('already')) {
-            setMessage({ text: 'Konto z tym adresem email już istnieje', type: 'error' })
-          } else {
-            setMessage({ text: error.message || 'Coś poszło nie tak', type: 'error' })
-          }
-        } else if (data.user?.identities?.length === 0) {
+
+      if (error) {
+        if (error.message.includes('User already registered') || error.message.includes('already')) {
           setMessage({ text: 'Konto z tym adresem email już istnieje', type: 'error' })
         } else {
-          setMessage({
-            text: `Wysłaliśmy link potwierdzający na adres:\n${email}\n\nKliknij w link, a potem zaloguj się!`,
-            type: 'success',
-          })
-          setEmail('')
-          setPassword('')
-          setPassword2('')
+          setMessage({ text: error.message || 'Coś poszło nie tak', type: 'error' })
         }
+        return
+      }
+
+      // 🔹 Automatyczne dodanie do tabeli profiles
+      if (data.user) {
+        await supabase.from('profiles').insert({
+          id: data.user.id,
+          email: data.user.email,
+          role: 'STUDENT', // domyślna rola
+        })
+      }
+
+      setMessage({
+        text: `Wysłaliśmy link potwierdzający na adres:\n${email}\n\nKliknij w link, a potem zaloguj się!`,
+        type: 'success',
       })
-      .catch(() => {
-        setMessage({ text: 'Błąd połączenia z serwerem', type: 'error' })
-      })
-      .finally(() => setLoading(false))
+      setEmail('')
+      setPassword('')
+      setPassword2('')
+    } catch {
+      setMessage({ text: 'Błąd połączenia z serwerem', type: 'error' })
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -88,21 +96,21 @@ export default function Register() {
             autoFocus
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="mt-1 block w-full px-4 py-3 border  text-gray-700 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600"
+            className="mt-1 block w-full px-4 py-3 border text-gray-700 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600"
             placeholder="twoj@email.pl"
           />
         </div>
 
         {/* Hasło */}
         <div>
-          <label className="block text-sm font-medium  text-gray-700">Hasło</label>
+          <label className="block text-sm font-medium text-gray-700">Hasło</label>
           <div className="mt-1 relative">
             <input
               type={showPassword ? 'text' : 'password'}
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="block w-full px-4 py-3 pr-12 border  text-gray-700 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600"
+              className="block w-full px-4 py-3 pr-12 border text-gray-700 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600"
               placeholder="Min. 8 znaków, duża/mała, cyfra, znak specjalny"
             />
             <button
@@ -127,7 +135,7 @@ export default function Register() {
               required
               value={password2}
               onChange={(e) => setPassword2(e.target.value)}
-              className="block w-full px-4 py-3 pr-12 border  text-gray-700 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600"
+              className="block w-full px-4 py-3 pr-12 border text-gray-700 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600"
             />
             <button
               type="button"
