@@ -171,7 +171,7 @@ export default function TopicThreads() {
         )}
 
         {showForm && (
-          <div className="bg-white rounded-2xl shadow-2xl p-8 mb-10 border-4 border-cyan-500">
+          <div className="bg-white rounded-2xl text-gray-600 shadow-2xl p-8 mb-10 border-4 border-cyan-500">
             <div className="flex justify-between mb-6">
               <h2 className="text-3xl font-bold text-blue-900">Nowe zadanie</h2>
               <button onClick={() => setShowForm(false)}><X size={32} className="text-red-600" /></button>
