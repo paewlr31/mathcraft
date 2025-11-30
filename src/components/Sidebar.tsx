@@ -17,7 +17,7 @@ export default function Sidebar({ user, role, onLogout }: SidebarProps) {
     { name: 'Chat', path: '/sharedPages/chat' },
     { name: 'Umowy', path: '/sharedPages/umowy' },
     { name: 'Przewodnik', path: '/sharedPages/przewodnik' },
-    { name: 'Forum', path: '/sharedPages/forum' },
+    { name: 'Forum', path: '/forum' },
     { name: 'Baza wiedzy', path: '/sharedPages/baza-wiedzy' },
   ];
 

@@ -288,7 +288,7 @@ export default function Home() {
           </p>
           <button 
           className="btn btn-lg bg-white text-blue-900 hover:bg-cyan-400 hover:text-blue-950 font-bold text-xl px-12 py-6 shadow-2xl transform hover:scale-105 transition"
-          onClick={() => navigate('/sharedPages/forum')}>
+          onClick={() => navigate('/forum')}>
             Wejdź na forum teraz!
           </button>
           <p className="mt-6 text-lg opacity-80">Już ponad 3 200 uczniów korzysta codziennie</p>

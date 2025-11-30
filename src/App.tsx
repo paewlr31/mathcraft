@@ -28,8 +28,12 @@ import Kasia from './pages/zespol/Kasia';
 import Chat from './pages/sharedPages/chat'
 import Umowy from './pages/sharedPages/umowy'
 import Przewodnik from './pages/sharedPages/przewodnik'
-import Forum from './pages/sharedPages/forum'
 import BazaWiedzy from './pages/sharedPages/baza-wiedzy'
+import ForumHome from './pages/sharedPages/forum/index'
+import Category from './pages/sharedPages/forum/Category'
+import Thread from './pages/sharedPages/forum/Thread'
+import NewThread from './pages/sharedPages/forum/NewThread'
+import TopicThreads from './pages/sharedPages/forum/TopicThreads'
 
 //student pages
 import Arkusze from './pages/student/arkusze' 
@@ -106,8 +110,14 @@ function App() {
       <Route path="/sharedPages/chat" element={session ? <Chat /> : <Navigate to="/login" />} />
       <Route path="/sharedPages/umowy" element={session ? <Umowy /> : <Navigate to="/login" />} />
       <Route path="/sharedPages/przewodnik" element={session ? <Przewodnik /> : <Navigate to="/login" />} />
-      <Route path="/sharedPages/forum" element={<Forum />} />
+      
       <Route path="/sharedPages/baza-wiedzy" element={<BazaWiedzy />} />
+      <Route path="/forum" element={<ForumHome />} />
+      <Route path="/forum/:category" element={<Category />} />
+      
+      <Route path="/forum/new" element={session ? <NewThread /> : <Navigate to="/login" />} />
+      <Route path="/forum/topic/:topicId" element={<TopicThreads />} />
+      <Route path="/forum/thread/:threadId" element={<Thread />} />
 
         {/* student pages */}
       <Route path="/student/arkusze" element={session ? <Arkusze /> : <Navigate to="/login" />} />
