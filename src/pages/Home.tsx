@@ -67,6 +67,7 @@ export default function Home() {
 
   const sections = {
     home: useRef<HTMLDivElement | null>(null),
+    blog: useRef<HTMLDivElement | null>(null),
     bazaWiedzy: useRef<HTMLDivElement | null>(null),
     dlaczego: useRef<HTMLDivElement | null>(null),
     korepetycje: useRef<HTMLDivElement | null>(null),
@@ -98,6 +99,7 @@ export default function Home() {
             <button onClick={() => scrollToSection(sections.kursy)} className="hover:text-blue-600 transition">Kursy</button>
             <button onClick={() => scrollToSection(sections.korepetycje)} className="hover:text-blue-600 transition">Korepetycje</button>
             <button onClick={() => scrollToSection(sections.forum)} className="hover:text-blue-600 transition">Forum</button>
+            <button onClick={() => scrollToSection(sections.blog)} className="hover:text-blue-600 transition">Blog</button>
 
             {session ? (
               <div className="flex items-center gap-6">
@@ -133,6 +135,7 @@ export default function Home() {
               <button onClick={() => scrollToSection(sections.dlaczego)}>Kursy</button>
               <button onClick={() => scrollToSection(sections.korepetycje)}>Korepetycje</button>
               <button onClick={() => scrollToSection(sections.forum)}>Forum</button>
+              <button onClick={() => scrollToSection(sections.blog)}>Blog</button>
               {session ? (
                 <>
                   <Link to="/dashboard" onClick={() => setIsMenuOpen(false)} className="font-bold text-blue-600">Dashboard</Link>
@@ -170,6 +173,26 @@ export default function Home() {
           <ChevronDown size={40} className="text-white" />
         </div>
       </section>
+      {/* BLOG */}
+<section ref={sections.blog} className="py-24 bg-linear-to-br from-orange-800 via-orange-700 to-purple-800 text-white">
+  <div className="max-w-5xl mx-auto px-6 text-center">
+    <h2 className="text-4xl md:text-6xl font-black mb-8 drop-shadow-lg">Blog Mathcraft</h2>
+    <p className="text-xl md:text-2xl mb-12 font-medium opacity-90 max-w-3xl mx-auto">
+      Aktualności ze świata edukacji, zmiany w CKE, porównania korepetycji i kursów online, 
+      praktyczne rady maturalne oraz kulisy prowadzenia Mathcraft!
+    </p>
+
+    <button
+      onClick={() => navigate('/blog')}
+      className="btn btn-lg bg-white text-indigo-900 hover:bg-purple-300 hover:text-indigo-950 font-bold text-xl px-12 py-6 shadow-2xl transform hover:scale-105 transition"
+    >
+      Przejdź do Bloga
+    </button>
+
+    <p className="mt-6 text-lg opacity-80">Nowe wpisy już wkrótce!</p>
+  </div>
+</section>
+
       {/* Baza Wiedzy */}
       <section ref={sections.bazaWiedzy} className="py-24 bg-linear-to-br from-yellow-800 via-yellow-600 to-yellow-400 text-white">
         <div className="max-w-4xl mx-auto text-center px-6">

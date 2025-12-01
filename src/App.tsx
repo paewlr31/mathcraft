@@ -28,6 +28,7 @@ import Kasia from './pages/zespol/Kasia';
 import Chat from './pages/sharedPages/chat'
 import Umowy from './pages/sharedPages/umowy'
 import Przewodnik from './pages/sharedPages/przewodnik'
+import Blog from './pages/sharedPages/blog'
 import BazaWiedzyHome from './pages/sharedPages/baza-wiedzy/index'
 import LevelPage from './pages/sharedPages/baza-wiedzy/Level'
 import SectionPage from './pages/sharedPages/baza-wiedzy/Section'
@@ -113,7 +114,8 @@ function App() {
       <Route path="/sharedPages/chat" element={session ? <Chat /> : <Navigate to="/login" />} />
       <Route path="/sharedPages/umowy" element={session ? <Umowy /> : <Navigate to="/login" />} />
       <Route path="/sharedPages/przewodnik" element={session ? <Przewodnik /> : <Navigate to="/login" />} />
-      
+      <Route path="/blog" element={<Blog />} />
+
       <Route path="/sharedPages/baza-wiedzy" element={<BazaWiedzyHome />} />
       <Route path="/sharedPages/baza-wiedzy/:levelSlug" element={<LevelPage />} />
       <Route path="/sharedPages/baza-wiedzy/:levelSlug/:sectionSlug" element={<SectionPage />} />

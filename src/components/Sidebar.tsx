@@ -19,6 +19,8 @@ export default function Sidebar({ user, role, onLogout }: SidebarProps) {
     { name: 'Przewodnik', path: '/sharedPages/przewodnik' },
     { name: 'Forum', path: '/forum' },
     { name: 'Baza wiedzy', path: '/sharedPages/baza-wiedzy' },
+    { name: 'Blog', path: '/blog' },
+
   ];
 
   const studentMenu = [
