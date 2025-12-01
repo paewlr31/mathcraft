@@ -28,7 +28,10 @@ import Kasia from './pages/zespol/Kasia';
 import Chat from './pages/sharedPages/chat'
 import Umowy from './pages/sharedPages/umowy'
 import Przewodnik from './pages/sharedPages/przewodnik'
-import BazaWiedzy from './pages/sharedPages/baza-wiedzy'
+import BazaWiedzyHome from './pages/sharedPages/baza-wiedzy/index'
+import LevelPage from './pages/sharedPages/baza-wiedzy/Level'
+import SectionPage from './pages/sharedPages/baza-wiedzy/Section'
+import TopicPage from './pages/sharedPages/baza-wiedzy/Topic'
 import ForumHome from './pages/sharedPages/forum/index'
 import Category from './pages/sharedPages/forum/Category'
 import Thread from './pages/sharedPages/forum/Thread'
@@ -111,7 +114,10 @@ function App() {
       <Route path="/sharedPages/umowy" element={session ? <Umowy /> : <Navigate to="/login" />} />
       <Route path="/sharedPages/przewodnik" element={session ? <Przewodnik /> : <Navigate to="/login" />} />
       
-      <Route path="/sharedPages/baza-wiedzy" element={<BazaWiedzy />} />
+      <Route path="/sharedPages/baza-wiedzy" element={<BazaWiedzyHome />} />
+      <Route path="/sharedPages/baza-wiedzy/:levelSlug" element={<LevelPage />} />
+      <Route path="/sharedPages/baza-wiedzy/:levelSlug/:sectionSlug" element={<SectionPage />} />
+      <Route path="/sharedPages/baza-wiedzy/:levelSlug/:sectionSlug/:topicSlug" element={<TopicPage />} />
       <Route path="/forum" element={<ForumHome />} />
       <Route path="/forum/:category" element={<Category />} />
       

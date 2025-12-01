@@ -95,7 +95,7 @@ export default function Home() {
 
           <div className="hidden md:flex gap-8 items-center">
             <button onClick={() => scrollToSection(sections.bazaWiedzy)} className="hover:text-blue-600 transition">Baza Wiedzy</button>
-            <button onClick={() => scrollToSection(sections.dlaczego)} className="hover:text-blue-600 transition">Kursy</button>
+            <button onClick={() => scrollToSection(sections.kursy)} className="hover:text-blue-600 transition">Kursy</button>
             <button onClick={() => scrollToSection(sections.korepetycje)} className="hover:text-blue-600 transition">Korepetycje</button>
             <button onClick={() => scrollToSection(sections.forum)} className="hover:text-blue-600 transition">Forum</button>
 
@@ -179,7 +179,7 @@ export default function Home() {
           </p>
           <button 
             className="btn btn-lg bg-white text-green-900 hover:bg-cyan-400 hover:text-green-950 font-bold text-xl px-12 py-6 shadow-2xl transform hover:scale-105 transition"
-            onClick={() => navigate('/sharedPages/baza-wiedzy')}
+            onClick={() => navigate('sharedPages/baza-wiedzy')}
           >
             Przejdź do Bazy Wiedzy
           </button>
