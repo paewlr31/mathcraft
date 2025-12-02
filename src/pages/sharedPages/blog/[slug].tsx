@@ -53,6 +53,15 @@ export default function BlogPost() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+         {/* NOWY PRZYCISK – GÓRA STRONY */}
+      <div className="max-w-4xl mx-auto px-6 pt-8">
+        <Link
+          to="/blog"
+          className="inline-flex items-center gap-2 text-purple-600 hover:text-purple-800 font-semibold text-lg transition"
+        >
+          ← Wróć do bloga
+        </Link>
+      </div>
       <article className="max-w-4xl mx-auto px-6 py-12">
         {/* Zdjęcie główne – teraz IDENTYCZNIE piękne na mobile i desktopie */}
 {post.thumbnail_url && (
