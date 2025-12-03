@@ -38,8 +38,8 @@ export default function Ocenianie() {
       <Sidebar user={user} role={role} onLogout={handleLogout} />
       <main className="flex-1 p-6 md:ml-64">
         <div className="bg-white shadow rounded-lg p-6 md:p-8">
-          <h1 className="text-3xl font-bold text-blue-700 mb-4">Tworzenie i ocenianie zadań</h1>
-          <p className="text-lg text-blue-800">Tutaj możesz tworzyć zadania i je oceniać.</p>
+          <h1 className="text-3xl font-bold text-blue-700 mb-4">Ocenianie zadań</h1>
+          <p className="text-lg text-blue-800">Tutaj możesz oceniać zadania.</p>
         </div>
       </main>
     </div>
