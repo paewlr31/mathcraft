@@ -28,7 +28,7 @@ import Kasia from './pages/zespol/Kasia';
 import Chat from './pages/sharedPages/chat'
 import Umowy from './pages/sharedPages/umowy'
 import Przewodnik from './pages/sharedPages/przewodnik'
-import Blog from './pages/sharedPages/blog'
+//import Blog from './pages/sharedPages/blog'
 import BlogHome from './pages/sharedPages/blog/index'
 import AddPost from './pages/sharedPages/blog/add/index'
 import BlogPost from './pages/sharedPages/blog/[slug]'
@@ -59,6 +59,7 @@ import StatystykiUczniow from './pages/teacher/statystyki-uczniow'
 import ArkuszeTeacher from './pages/teacher/arkusze'
 import NajwazniejszeTeacher from './pages/teacher/najwazniejsze'
 import KursyTeacher from './pages/teacher/kursy'
+import CourseDetail from './pages/teacher/kursy/[id]' 
 
 //admin pages
 import ForumAdmin from './pages/admin/forum'
@@ -150,6 +151,7 @@ function App() {
       <Route path="/teacher/arkusze" element={session ? <ArkuszeTeacher /> : <Navigate to="/login" />} />
       <Route path="/teacher/najwazniejsze" element={session ? <NajwazniejszeTeacher /> : <Navigate to="/login" />} />
       <Route path="/teacher/kursy" element={session ? <KursyTeacher /> : <Navigate to="/login" />} />
+      <Route path="/teacher/kursy/:id" element={session ? <CourseDetail /> : <Navigate to="/login" />} />  
         {/* admin pages */}
       <Route path="/admin/forum" element={session ? <ForumAdmin /> : <Navigate to="/login" />} />
       <Route path="/admin/kursy" element={session ? <KursyAdmin /> : <Navigate to="/login" />} />
