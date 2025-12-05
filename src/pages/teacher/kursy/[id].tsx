@@ -258,7 +258,7 @@ export default function CourseDetail() {
             </p>
             <div className="mt-6 flex items-center gap-3">
               <Users className="w-6 h-6 text-green-600" />
-              <span className="text-lg">{students.length} {students.length === 1 ? 'uczeń' : 'uczniów'}</span>
+              <span className="text-lg text-gray-600">{students.length} {students.length === 1 ? 'uczeń' : 'uczniów'}</span>
             </div>
 
             {students.length > 0 && (

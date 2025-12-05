@@ -114,7 +114,11 @@ export default function KursyStudent() {
 
       <main className="flex-1 p-6 md:ml-64">
         <div className="max-w-6xl mx-auto">
-          <h1 className="text-4xl font-bold text-blue-800 mb-10">Moje kursy</h1>
+          {/* Ten sam box co w "Moje lekcje" */}
+          <div className="bg-white shadow rounded-lg p-6 md:p-8">
+            <h1 className="text-3xl font-bold text-blue-700 mb-4">Moje kursy</h1>
+            <p className="text-lg text-blue-800">Wybierz kurs, aby zobaczyć lekcje i zadania.</p>
+          </div>
 
           {loading ? (
             <div className="text-center py-20">
