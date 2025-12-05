@@ -26,7 +26,6 @@ export default function KursyTeacher() {
 
       setUser(authUser);
 
-      // Sprawdź, czy użytkownik ma rolę TEACHER
       const { data: profile } = await supabase
         .from('profiles')
         .select('role')
@@ -38,9 +37,7 @@ export default function KursyTeacher() {
         return navigate('/');
       }
 
-      // ← Teraz poprawnie przekazujemy ID użytkownika, nie "role"
       await fetchMyCourses(authUser.id);
-      console.log('Aktualne user.id:', authUser.id);
     };
 
     init();
@@ -49,24 +46,13 @@ export default function KursyTeacher() {
   const fetchMyCourses = async (userId: string) => {
     setLoading(true);
 
-    // 1. Znajdź wszystkie kursy, w których bieżący użytkownik ma rolę TEACHER
     const { data: enrollments, error: err1 } = await supabase
       .from('course_enrollments')
       .select('course_id')
-      .eq('user_id', userId)           // ← tutaj musi być ID użytkownika!
+      .eq('user_id', userId)
       .eq('role', 'TEACHER');
 
-    console.log('Enrollments (nauczyciel):', enrollments);
-    
-
-    if (err1) {
-      console.error('Błąd enrollments:', err1);
-      setCourses([]);
-      setLoading(false);
-      return;
-    }
-
-    if (!enrollments || enrollments.length === 0) {
+    if (err1 || !enrollments || enrollments.length === 0) {
       setCourses([]);
       setLoading(false);
       return;
@@ -74,7 +60,6 @@ export default function KursyTeacher() {
 
     const courseIds = enrollments.map(e => e.course_id);
 
-    // 2. Pobierz podstawowe dane kursów + liczba lekcji
     const { data: coursesData, error: err2 } = await supabase
       .from('courses')
       .select(`
@@ -85,13 +70,11 @@ export default function KursyTeacher() {
       .in('id', courseIds);
 
     if (err2 || !coursesData) {
-      console.error('Błąd pobierania kursów:', err2);
       setCourses([]);
       setLoading(false);
       return;
     }
 
-    // 3. Policz uczniów i nauczycieli dla każdego kursu
     const { data: allEnrollments } = await supabase
       .from('course_enrollments')
       .select('course_id, role')
@@ -105,7 +88,6 @@ export default function KursyTeacher() {
       statsMap.set(e.course_id, stats);
     });
 
-    // 4. Połącz wszystko w jedną tablicę
     const formattedCourses: Course[] = coursesData.map(c => {
       const stats = statsMap.get(c.id) || { students: 0, teachers: 0 };
       return {
@@ -130,9 +112,18 @@ export default function KursyTeacher() {
     <div className="flex min-h-screen bg-gray-100">
       <Sidebar user={user} role="TEACHER" onLogout={handleLogout} />
 
-      <main className="flex-1 p-6 md:ml-64">
-        <div className="max-w-6xl mx-auto">
-          <h1 className="text-4xl font-bold text-blue-800 mb-10">Moje kursy</h1>
+      <main className="flex-1 p-4 sm:p-6 md:ml-64">
+        <div className="max-w-7xl mx-auto">
+
+          {/* ŁADNY BIAŁY BOX Z NAGŁÓWKIM – TAK SAMO JAK W "MOI UCZNIOWIE" */}
+          <div className="bg-white shadow rounded-2xl p-6 sm:p-8 mb-10">
+            <h1 className="text-3xl sm:text-4xl font-bold text-blue-700">
+              Moje kursy
+            </h1>
+            <p className="text-lg text-blue-800 mt-2">
+              Tutaj znajdziesz wszystkie kursy, które prowadzisz.
+            </p>
+          </div>
 
           {loading ? (
             <div className="text-center py-20">
@@ -149,33 +140,33 @@ export default function KursyTeacher() {
               </p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
               {courses.map(course => (
                 <button
                   key={course.id}
                   onClick={() => navigate(`/teacher/kursy/${course.id}`)}
-                  className="bg-white rounded-2xl shadow-xl p-8 text-left hover:shadow-2xl hover:scale-105 transition-all duration-300 border-4 border-purple-500 group"
+                  className="bg-white rounded-2xl shadow-xl p-8 text-left hover:shadow-2xl hover:scale-105 transition-all duration-300 border-4 border-purple-500 group text-center sm:text-left"
                 >
-                  <h2 className="text-2xl font-bold text-purple-700 mb-6">
+                  <h2 className="text-2xl font-bold text-purple-700 mb-6 line-clamp-2">
                     {course.title}
                   </h2>
 
                   <div className="space-y-4 text-gray-600">
-                    <div className="flex items-center gap-3">
-                      <Calendar className="w-6 h-6 text-indigo-600" />
+                    <div className="flex items-center justify-center sm:justify-start gap-3">
+                      <Calendar className="w-6 h-6 text-indigo-600 flex-shrink-0" />
                       <span className="font-medium">{course.lessons_count} lekcji</span>
                     </div>
-                    <div className="flex items-center gap-3">
-                      <Users className="w-6 h-6 text-green-600" />
+                    <div className="flex items-center justify-center sm:justify-start gap-3">
+                      <Users className="w-6 h-6 text-green-600 flex-shrink-0" />
                       <span className="font-medium">{course.students_count} uczniów</span>
                     </div>
-                    <div className="flex items-center gap-3">
-                      <Users className="w-6 h-6 text-blue-600" />
+                    <div className="flex items-center justify-center sm:justify-start gap-3">
+                      <Users className="w-6 h-6 text-blue-600 flex-shrink-0" />
                       <span className="font-medium">{course.teachers_count} nauczycieli</span>
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-end mt-8 text-purple-700 font-bold group-hover:text-purple-900">
+                  <div className="flex items-center justify-center sm:justify-end mt-8 text-purple-700 font-bold group-hover:text-purple-900">
                     Przejdź do kursu
                     <ChevronRight className="w-8 h-8 ml-2 group-hover:translate-x-2 transition" />
                   </div>

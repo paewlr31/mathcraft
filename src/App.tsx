@@ -61,6 +61,7 @@ import ArkuszeTeacher from './pages/teacher/arkusze'
 import NajwazniejszeTeacher from './pages/teacher/najwazniejsze'
 import KursyTeacher from './pages/teacher/kursy'
 import CourseDetail from './pages/teacher/kursy/[id]' 
+import StudentHomework from './pages/teacher/uczen/[id]'
 
 //admin pages
 import ForumAdmin from './pages/admin/forum'
@@ -153,6 +154,7 @@ function App() {
       <Route path="/teacher/najwazniejsze" element={session ? <NajwazniejszeTeacher /> : <Navigate to="/login" />} />
       <Route path="/teacher/kursy" element={session ? <KursyTeacher /> : <Navigate to="/login" />} />
       <Route path="/teacher/kursy/:id" element={session ? <CourseDetail /> : <Navigate to="/login" />} />  
+      <Route path="/teacher/uczen/:id" element={session ? <StudentHomework /> : <Navigate to="/login" />} />  
         {/* admin pages */}
       <Route path="/admin/forum" element={session ? <ForumAdmin /> : <Navigate to="/login" />} />
       <Route path="/admin/kursy" element={session ? <KursyAdmin /> : <Navigate to="/login" />} />
