@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { supabase } from '../../../lib/supabaseClient';
 import { useParams, useNavigate } from 'react-router-dom';
 import Sidebar from '../../../components/Sidebar';
-import { ArrowLeft, Trash2, Link2, FileText, Users, Edit3, Save, X, CheckCircle } from 'lucide-react';
+import { ArrowLeft, Trash2, Link2, FileText, Users, Edit3, Save, X, CheckCircle, Calendar } from 'lucide-react';
 
 interface Lesson {
   id: string;
@@ -16,6 +16,7 @@ interface Lesson {
   answers_pdf_url: string | null;
   homework_pdf_url: string | null;
   homework_description: string | null;
+  lesson_date: string | null;           // NOWE POLE
 }
 
 interface Student {
@@ -33,8 +34,8 @@ export default function CourseDetail() {
   const [loading, setLoading] = useState(true);
   const [editingLesson, setEditingLesson] = useState<string | null>(null);
   const [uploadingFile, setUploadingFile] = useState<string | null>(null);
-  
-  // Stany dla edycji pól tekstowych
+
+  // Stany dla edycji pól tekstowych i daty
   const [editedFields, setEditedFields] = useState<{[key: string]: any}>({});
 
   useEffect(() => {
@@ -144,7 +145,6 @@ export default function CourseDetail() {
         return;
       }
 
-      // Odśwież dane po uploadzie
       await fetchCourseData();
       alert('Plik został pomyślnie przesłany!');
     } catch (error) {
@@ -166,7 +166,6 @@ export default function CourseDetail() {
     try {
       const updates: any = {};
       
-      // Zbierz wszystkie zmienione pola dla tej lekcji
       Object.keys(editedFields).forEach(key => {
         if (key.startsWith(`${lessonId}-`)) {
           const field = key.replace(`${lessonId}-`, '');
@@ -187,10 +186,9 @@ export default function CourseDetail() {
         }
       }
 
-      // Zamknij edycję i odśwież
       setEditingLesson(null);
       await fetchCourseData();
-      alert('Zmiany zapisane!');
+      alert('Zmiany zapisane pomyślnie!');
     } catch (error) {
       console.error('Unexpected error in saveAllChanges:', error);
       alert('Błąd podczas zapisywania zmian');
@@ -220,9 +218,7 @@ export default function CourseDetail() {
             .from('course-materials')
             .remove([filePath]);
 
-          if (deleteError) {
-            console.error('Storage delete error:', deleteError);
-          }
+          if (deleteError) console.error('Storage delete error:', deleteError);
         }
 
         await fetchCourseData();
@@ -288,9 +284,18 @@ export default function CourseDetail() {
               return (
                 <div key={lesson.id} className="bg-white rounded-2xl shadow-xl p-8 border-4 border-purple-300">
                   <div className="flex justify-between items-start mb-6">
-                    <h3 className="text-2xl font-bold text-purple-700">
-                      Lekcja {lesson.lesson_number}: {lesson.title}
-                    </h3>
+                    <div>
+                      <h3 className="text-2xl font-bold text-purple-700">
+                        Lekcja {lesson.lesson_number}: {lesson.title}
+                      </h3>
+                      {/* Wyświetlanie daty w nagłówku lekcji (nawet poza trybem edycji) */}
+                      {lesson.lesson_date && !isEditing && (
+                        <p className="text-sm text-gray-600 mt-1 flex items-center gap-1">
+                          <Calendar className="w-4 h-4" />
+                          {new Date(lesson.lesson_date).toLocaleDateString('pl-PL')}
+                        </p>
+                      )}
+                    </div>
                     <button
                       onClick={() => {
                         if (isEditing) {
@@ -309,6 +314,20 @@ export default function CourseDetail() {
 
                   {isEditing ? (
                     <div className="space-y-6">
+
+                      {/* NOWE POLE – DATA LEKCJI */}
+                      <div>
+                        <label className="flex items-center gap-2 font-medium mb-2">
+                          <Calendar className="w-5 h-5" /> Data lekcji
+                        </label>
+                        <input
+                          type="date"
+                          value={getFieldValue(lesson.id, 'lesson_date', lesson.lesson_date || '')}
+                          onChange={(e) => handleFieldChange(lesson.id, 'lesson_date', e.target.value)}
+                          className="w-full px-4 py-2 border rounded-lg"
+                        />
+                      </div>
+
                       {/* Link do nagrania */}
                       <div>
                         <label className="flex items-center gap-2 font-medium mb-2">

@@ -48,6 +48,7 @@ import KursyStudent from './pages/student/kursy'
 import Zadania from './pages/student/zadania'
 import Lekcje from './pages/student/lekcje'
 import Najwazniejsze from './pages/student/najwazniejsze'
+import CourseDetailStudent from './pages/student/kursy/[id]'
 
 
 //teacher pages
@@ -141,7 +142,7 @@ function App() {
       <Route path="/student/zadania" element={session ? <Zadania /> : <Navigate to="/login" />} />
       <Route path="/student/lekcje" element={session ? <Lekcje /> : <Navigate to="/login" />} />
       <Route path="/student/najwazniejsze" element={session ? <Najwazniejsze /> : <Navigate to="/login" />} />
-      
+      <Route path="/student/kursy/:id" element={session ? <CourseDetailStudent /> : <Navigate to="/login" />} />
         {/* teacher pages */}
       <Route path="/teacher/uczniowie" element={session ? <Uczniowie /> : <Navigate to="/login" />} />
       <Route path="/teacher/kalendarz" element={session ? <Kalendarz /> : <Navigate to="/login" />} />
