@@ -14,7 +14,7 @@ export default function Sidebar({ user, role, onLogout }: SidebarProps) {
 
   const commonMenu = [
     { name: 'Dashboard', path: '/dashboard' },
-    { name: 'Chat', path: '/sharedPages/chat' },
+    { name: 'Chat', path: '/chat' },
     { name: 'Umowy', path: '/sharedPages/umowy' },
     { name: 'Przewodnik', path: '/sharedPages/przewodnik' },
     { name: 'Forum', path: '/forum' },

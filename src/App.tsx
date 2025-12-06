@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { useEffect, useState } from 'react'
 import { supabase } from './lib/supabaseClient'
 
-//Komonenty
+// Komponenty
 import ScrollToTop from './components/ScrollToTop'
 
 import Home from './pages/Home'
@@ -25,10 +25,9 @@ import Michal from './pages/zespol/Michal';
 import Kasia from './pages/zespol/Kasia';
 
 // Shared pages
-import Chat from './pages/sharedPages/chat'
+import Chat from './pages/sharedPages/chat/index'
 import Umowy from './pages/sharedPages/umowy'
 import Przewodnik from './pages/sharedPages/przewodnik'
-//import Blog from './pages/sharedPages/blog'
 import BlogHome from './pages/sharedPages/blog/index'
 import AddPost from './pages/sharedPages/blog/add/index'
 import BlogPost from './pages/sharedPages/blog/[slug]'
@@ -42,7 +41,7 @@ import Thread from './pages/sharedPages/forum/Thread'
 import NewThread from './pages/sharedPages/forum/NewThread'
 import TopicThreads from './pages/sharedPages/forum/TopicThreads'
 
-//student pages
+// Student pages
 import Arkusze from './pages/student/arkusze' 
 import KursyStudent from './pages/student/kursy'
 import Zadania from './pages/student/zadania'
@@ -50,8 +49,7 @@ import Lekcje from './pages/student/lekcje'
 import Najwazniejsze from './pages/student/najwazniejsze'
 import CourseDetailStudent from './pages/student/kursy/[id]'
 
-
-//teacher pages
+// Teacher pages
 import Uczniowie from './pages/teacher/uczniowie'
 import Kalendarz from './pages/teacher/kalendarz'
 import Ocenianie from './pages/teacher/ocenianie'
@@ -63,7 +61,7 @@ import KursyTeacher from './pages/teacher/kursy'
 import CourseDetail from './pages/teacher/kursy/[id]' 
 import StudentHomework from './pages/teacher/uczen/[id]'
 
-//admin pages
+// Admin pages
 import ForumAdmin from './pages/admin/forum'
 import KursyAdmin from './pages/admin/kursy'
 import LekcjeAdmin from './pages/admin/lekcje'
@@ -72,7 +70,6 @@ import StatystykiGlobalne from './pages/admin/statystyki-globalne'
 import Materialy from './pages/admin/materialy'
 import System from './pages/admin/system'
 import Users from './pages/admin/users'
-
 
 function App() {
   const [session, setSession] = useState<any>(null)
@@ -95,15 +92,16 @@ function App() {
     <Router>
       <ScrollToTop /> 
       <Routes>
+        {/* Public routes */}
         <Route path="/" element={<Home />} />
         <Route path="/login" element={!session ? <Login /> : <Navigate to="/dashboard" />} />
         <Route path="/register" element={!session ? <Register /> : <Navigate to="/dashboard" />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/update-password" element={<UpdatePassword />} />
-        <Route
-          path="/dashboard"
-          element={session ? <Dashboard /> : <Navigate to="/login" />}
-        />
+
+        {/* Dashboard */}
+        <Route path="/dashboard" element={session ? <Dashboard /> : <Navigate to="/login" />} />
+
         {/* Kursy */}
         <Route path="/kursy/matura-rozszerzona" element={<MaturaRozszerzona />} />
         <Route path="/kursy/matura-podstawowa" element={<MaturaPodstawowa />} />
@@ -115,56 +113,61 @@ function App() {
         <Route path="/zespol/anna" element={<Anna />} />
         <Route path="/zespol/michal" element={<Michal />} />
         <Route path="/zespol/kasia" element={<Kasia />} />
-       
+
+        {/* Chat – tylko jedna ścieżka */}
+        <Route path="/chat" element={session ? <Chat /> : <Navigate to="/login" />} />
+
         {/* Shared pages */}
-      <Route path="/sharedPages/chat" element={session ? <Chat /> : <Navigate to="/login" />} />
-      <Route path="/sharedPages/umowy" element={session ? <Umowy /> : <Navigate to="/login" />} />
-      <Route path="/sharedPages/przewodnik" element={session ? <Przewodnik /> : <Navigate to="/login" />} />
-     
-      
-      <Route path="/blog" element={<BlogHome />} />
-      <Route path="/blog/add" element={<AddPost />} />  
-      <Route path="/blog/:slug" element={<BlogPost />} />
+        <Route path="/sharedPages/umowy" element={session ? <Umowy /> : <Navigate to="/login" />} />
+        <Route path="/sharedPages/przewodnik" element={session ? <Przewodnik /> : <Navigate to="/login" />} />
 
-      <Route path="/sharedPages/baza-wiedzy" element={<BazaWiedzyHome />} />
-      <Route path="/sharedPages/baza-wiedzy/:levelSlug" element={<LevelPage />} />
-      <Route path="/sharedPages/baza-wiedzy/:levelSlug/:sectionSlug" element={<SectionPage />} />
-      <Route path="/sharedPages/baza-wiedzy/:levelSlug/:sectionSlug/:topicSlug" element={<TopicPage />} />
-      <Route path="/forum" element={<ForumHome />} />
-      <Route path="/forum/:category" element={<Category />} />
-      
-      <Route path="/forum/new" element={session ? <NewThread /> : <Navigate to="/login" />} />
-      <Route path="/forum/topic/:topicId" element={<TopicThreads />} />
-      <Route path="/forum/thread/:threadId" element={<Thread />} />
+        {/* Blog */}
+        <Route path="/blog" element={<BlogHome />} />
+        <Route path="/blog/add" element={<AddPost />} />  
+        <Route path="/blog/:slug" element={<BlogPost />} />
 
-        {/* student pages */}
-      <Route path="/student/arkusze" element={session ? <Arkusze /> : <Navigate to="/login" />} />
-      <Route path="/student/kursy" element={session ? <KursyStudent /> : <Navigate to="/login" />} />
-      <Route path="/student/zadania" element={session ? <Zadania /> : <Navigate to="/login" />} />
-      <Route path="/student/lekcje" element={session ? <Lekcje /> : <Navigate to="/login" />} />
-      <Route path="/student/najwazniejsze" element={session ? <Najwazniejsze /> : <Navigate to="/login" />} />
-      <Route path="/student/kursy/:id" element={session ? <CourseDetailStudent /> : <Navigate to="/login" />} />
-        {/* teacher pages */}
-      <Route path="/teacher/uczniowie" element={session ? <Uczniowie /> : <Navigate to="/login" />} />
-      <Route path="/teacher/kalendarz" element={session ? <Kalendarz /> : <Navigate to="/login" />} />
-      <Route path="/teacher/ocenianie" element={session ? <Ocenianie /> : <Navigate to="/login" />} />
-      <Route path="/teacher/repo" element={session ? <Repo /> : <Navigate to="/login" />} />
-      <Route path="/teacher/statystyki-uczniow" element={session ? <StatystykiUczniow /> : <Navigate to="/login" />} />
-      <Route path="/teacher/arkusze" element={session ? <ArkuszeTeacher /> : <Navigate to="/login" />} />
-      <Route path="/teacher/najwazniejsze" element={session ? <NajwazniejszeTeacher /> : <Navigate to="/login" />} />
-      <Route path="/teacher/kursy" element={session ? <KursyTeacher /> : <Navigate to="/login" />} />
-      <Route path="/teacher/kursy/:id" element={session ? <CourseDetail /> : <Navigate to="/login" />} />  
-      <Route path="/teacher/uczen/:id" element={session ? <StudentHomework /> : <Navigate to="/login" />} />  
-        {/* admin pages */}
-      <Route path="/admin/forum" element={session ? <ForumAdmin /> : <Navigate to="/login" />} />
-      <Route path="/admin/kursy" element={session ? <KursyAdmin /> : <Navigate to="/login" />} />
-      <Route path="/admin/lekcje" element={session ? <LekcjeAdmin /> : <Navigate to="/login" />} />
-      <Route path="/admin/finanse" element={session ? <Finanse /> : <Navigate to="/login" />} />
-      <Route path="/admin/statystyki-globalne" element={session ? <StatystykiGlobalne /> : <Navigate to="/login" />} />
-      <Route path="/admin/materialy" element={session ? <Materialy /> : <Navigate to="/login" />} />
-      <Route path="/admin/system" element={session ? <System /> : <Navigate to="/login" />} />
-      <Route path="/admin/users" element={session ? <Users /> : <Navigate to="/login" />} />
-        {/* inne strony później */}
+        {/* Baza wiedzy */}
+        <Route path="/sharedPages/baza-wiedzy" element={<BazaWiedzyHome />} />
+        <Route path="/sharedPages/baza-wiedzy/:levelSlug" element={<LevelPage />} />
+        <Route path="/sharedPages/baza-wiedzy/:levelSlug/:sectionSlug" element={<SectionPage />} />
+        <Route path="/sharedPages/baza-wiedzy/:levelSlug/:sectionSlug/:topicSlug" element={<TopicPage />} />
+
+        {/* Forum */}
+        <Route path="/forum" element={<ForumHome />} />
+        <Route path="/forum/:category" element={<Category />} />
+        <Route path="/forum/new" element={session ? <NewThread /> : <Navigate to="/login" />} />
+        <Route path="/forum/topic/:topicId" element={<TopicThreads />} />
+        <Route path="/forum/thread/:threadId" element={<Thread />} />
+
+        {/* Student pages */}
+        <Route path="/student/arkusze" element={session ? <Arkusze /> : <Navigate to="/login" />} />
+        <Route path="/student/kursy" element={session ? <KursyStudent /> : <Navigate to="/login" />} />
+        <Route path="/student/zadania" element={session ? <Zadania /> : <Navigate to="/login" />} />
+        <Route path="/student/lekcje" element={session ? <Lekcje /> : <Navigate to="/login" />} />
+        <Route path="/student/najwazniejsze" element={session ? <Najwazniejsze /> : <Navigate to="/login" />} />
+        <Route path="/student/kursy/:id" element={session ? <CourseDetailStudent /> : <Navigate to="/login" />} />
+
+        {/* Teacher pages */}
+        <Route path="/teacher/uczniowie" element={session ? <Uczniowie /> : <Navigate to="/login" />} />
+        <Route path="/teacher/kalendarz" element={session ? <Kalendarz /> : <Navigate to="/login" />} />
+        <Route path="/teacher/ocenianie" element={session ? <Ocenianie /> : <Navigate to="/login" />} />
+        <Route path="/teacher/repo" element={session ? <Repo /> : <Navigate to="/login" />} />
+        <Route path="/teacher/statystyki-uczniow" element={session ? <StatystykiUczniow /> : <Navigate to="/login" />} />
+        <Route path="/teacher/arkusze" element={session ? <ArkuszeTeacher /> : <Navigate to="/login" />} />
+        <Route path="/teacher/najwazniejsze" element={session ? <NajwazniejszeTeacher /> : <Navigate to="/login" />} />
+        <Route path="/teacher/kursy" element={session ? <KursyTeacher /> : <Navigate to="/login" />} />
+        <Route path="/teacher/kursy/:id" element={session ? <CourseDetail /> : <Navigate to="/login" />} />  
+        <Route path="/teacher/uczen/:id" element={session ? <StudentHomework /> : <Navigate to="/login" />} />  
+
+        {/* Admin pages */}
+        <Route path="/admin/forum" element={session ? <ForumAdmin /> : <Navigate to="/login" />} />
+        <Route path="/admin/kursy" element={session ? <KursyAdmin /> : <Navigate to="/login" />} />
+        <Route path="/admin/lekcje" element={session ? <LekcjeAdmin /> : <Navigate to="/login" />} />
+        <Route path="/admin/finanse" element={session ? <Finanse /> : <Navigate to="/login" />} />
+        <Route path="/admin/statystyki-globalne" element={session ? <StatystykiGlobalne /> : <Navigate to="/login" />} />
+        <Route path="/admin/materialy" element={session ? <Materialy /> : <Navigate to="/login" />} />
+        <Route path="/admin/system" element={session ? <System /> : <Navigate to="/login" />} />
+        <Route path="/admin/users" element={session ? <Users /> : <Navigate to="/login" />} />
       </Routes>
     </Router>
   )
