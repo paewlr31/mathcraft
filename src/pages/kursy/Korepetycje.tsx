@@ -7,7 +7,7 @@ export default function Korepetycje() {
     <div className="min-h-screen bg-gray-50 pt-20">
 
       {/* Powrót */}
-      <div className="max-w-7xl mx-auto px-6 px-6">
+      <div className="max-w-7xl mx-auto px-6">
         <Link to="/" className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-800 font-medium">
           <ArrowLeft size={20} /> Wróć na stronę główną
         </Link>
@@ -23,7 +23,7 @@ export default function Korepetycje() {
               <img
                 src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1400"
                 alt="Korepetycje indywidualne matematyka online"
-                className="w-full rounded-3xl shadow-2xl object-cover aspect-[4/3] lg:aspect-auto lg:h-full"
+                className="w-full rounded-3xl shadow-2xl object-cover aspect-4/3 lg:aspect-auto lg:h-full"
               />
             </div>
 
@@ -56,7 +56,7 @@ export default function Korepetycje() {
                   "Bezpłatna lekcja próbna"
                 ].map((item, i) => (
                   <div key={i} className="flex items-center gap-4 justify-center lg:justify-start">
-                    <div className="bg-blue-600 text-white rounded-full p-2 flex-shrink-0">
+                    <div className="bg-blue-600 text-white rounded-full p-2 shrink-0">
                       <Check size={20} />
                     </div>
                     <span className="text-lg font-medium text-gray-800">{item}</span>
@@ -123,7 +123,7 @@ export default function Korepetycje() {
           </div>
 
           {/* Kontakt – niebieski */}
-          <div className="bg-gradient-to-r from-blue-600 to-blue-800 text-white p-8 md:p-12 rounded-3xl text-center">
+          <div className="bg-linear-to-r from-blue-600 to-blue-800 text-white p-8 md:p-12 rounded-3xl text-center">
             <h3 className="text-3xl md:text-4xl font-black mb-8">Chcesz zacząć? Zadzwoń albo napisz!</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-2xl mx-auto">
               <a

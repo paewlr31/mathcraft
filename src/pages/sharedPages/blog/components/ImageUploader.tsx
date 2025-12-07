@@ -20,7 +20,7 @@ export default function ImageUploader({ onUpload, currentImage }: Props) {
 
     setUploading(true);
 
-    const { error, data } = await supabase.storage
+    const { error } = await supabase.storage
       .from('images') // Upewnij się, że masz bucket "images" w Supabase Storage
       .upload(filePath, file);
 

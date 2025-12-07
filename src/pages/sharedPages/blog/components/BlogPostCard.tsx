@@ -32,7 +32,7 @@ export default function BlogPostCard({ post }: { post: Post }) {
             <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-20 transition-opacity duration-300" />
           </div>
         ) : (
-          <div className="bg-gradient-to-br from-gray-200 to-gray-300 h-64 md:h-64 md:w-96 lg:h-80 flex items-center justify-center">
+          <div className="bg-linear-to-br from-gray-200 to-gray-300 h-64 md:h-64 md:w-96 lg:h-80 flex items-center justify-center">
             <span className="text-gray-500 text-lg font-medium">Brak zdjęcia</span>
           </div>
         )}

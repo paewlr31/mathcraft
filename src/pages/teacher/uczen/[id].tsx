@@ -242,7 +242,7 @@ export default function StudentHomework() {
               <div key={task.id} className="bg-white rounded-xl shadow hover:shadow-xl transition p-5 border border-gray-200">
                 <div className="flex items-start justify-between gap-4">
                   <a href={task.file_url} target="_blank" rel="noopener noreferrer" className="flex-1 flex items-start gap-4">
-                    <FileText className="w-10 h-10 text-blue-600 flex-shrink-0" />
+                    <FileText className="w-10 h-10 text-blue-600 shrink-0" />
                     <div className="min-w-0">
                       <p className="font-semibold text-gray-600 mt-1 text-lg break-all">{task.file_name}</p>
                       <p className="text-gray-600">{task.course_title} → Lekcja {task.lesson_number}: {task.lesson_title}</p>

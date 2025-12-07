@@ -82,7 +82,7 @@ export default function Kasia() {
                   alt="Kasia Wiśniewska – mistrzyni podstawowej i ósmoklasisty"
                   className="w-full max-w-lg mx-auto rounded-3xl shadow-2xl object-cover aspect-square"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent rounded-3xl"></div>
+                <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent rounded-3xl"></div>
                 <div className="absolute bottom-8 left-8 text-white">
                   <p className="text-5xl font-black drop-shadow-2xl">Kasia</p>
                   <p className="text-2xl font-bold opacity-95 drop-shadow-lg">Matematyka może być piękna</p>
@@ -94,7 +94,7 @@ export default function Kasia() {
       </section>
 
       {/* Mocny, ciepły CTA */}
-      <section className="py-20 bg-gradient-to-br from-rose-600 to-pink-700">
+      <section className="py-20 bg-linear-to-br from-rose-600 to-pink-700">
         <div className="max-w-4xl mx-auto px-6 text-center text-white">
           <h2 className="text-4xl md:text-6xl font-black mb-8">
             Chcesz, żeby Twoje dziecko pokochało matematykę?

@@ -23,7 +23,7 @@ export default function IBMath() {
               <img
                 src="https://images.unsplash.com/photo-1532619675605-1ede1939e1c9?q=80&w=1400"
                 alt="Kurs IB Mathematics AA & AI"
-                className="w-full rounded-3xl shadow-2xl object-cover aspect-[4/3] lg:aspect-auto lg:h-full"
+                className="w-full rounded-3xl shadow-2xl object-cover aspect-4/3 lg:aspect-auto lg:h-full"
               />
             </div>
 
@@ -55,7 +55,7 @@ export default function IBMath() {
                   "Bezpłatna lekcja próbna"
                 ].map((item, i) => (
                   <div key={i} className="flex items-center gap-4 justify-center lg:justify-start">
-                    <div className="bg-purple-700 text-white rounded-full p-2 flex-shrink-0">
+                    <div className="bg-purple-700 text-white rounded-full p-2 shrink-0">
                       <Check size={20} />
                     </div>
                     <span className="text-lg font-medium text-gray-800">{item}</span>
@@ -122,7 +122,7 @@ export default function IBMath() {
           </div>
 
           {/* Kontakt – fioletowy */}
-          <div className="bg-gradient-to-r from-purple-700 to-indigo-800 text-white p-8 md:p-12 rounded-3xl text-center">
+          <div className="bg-linear-to-r from-purple-700 to-indigo-800 text-white p-8 md:p-12 rounded-3xl text-center">
             <h3 className="text-3xl md:text-4xl font-black mb-8">Chcesz 7 z IB Math? Odezwij się!</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-2xl mx-auto">
               <a

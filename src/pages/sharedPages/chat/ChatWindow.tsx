@@ -171,7 +171,7 @@ export default function ChatWindow({ currentUserId, recipientId, onBack }: Props
             className={`flex ${msg.sender_id === currentUserId ? 'justify-end' : 'justify-start'}`}
           >
             <div
-              className={`max-w-[80%] md:max-w-md px-4 py-3 rounded-2xl shadow-sm break-words ${
+              className={`max-w-[80%] md:max-w-md px-4 py-3 rounded-2xl shadow-sm wrap-break-word ${
                 msg.sender_id === currentUserId
                   ? 'bg-blue-600 text-white'
                   : 'bg-white text-gray-800 border border-gray-200'

@@ -41,7 +41,7 @@ export default function TopicPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-yellow-800 via-yellow-600 to-orange-600 py-16 px-6">
+    <div className="min-h-screen bg-linear-to-br from-yellow-800 via-yellow-600 to-orange-600 py-16 px-6">
       <div className="max-w-4xl mx-auto">
         {/* PRZYCISK POWRÓT */}
         <button
@@ -72,13 +72,13 @@ export default function TopicPage() {
 
                 <button
                   onClick={() => toggleSolution(task.id)}
-                  className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold text-xl px-10 py-4 rounded-xl hover:from-indigo-700 hover:to-purple-700 transition shadow-lg"
+                  className="bg-linear-to-br from-indigo-600 to-purple-600 text-white font-bold text-xl px-10 py-4 rounded-xl hover:from-indigo-700 hover:to-purple-700 transition shadow-lg"
                 >
                   {showSolutions[task.id] ? 'Ukryj rozwiązanie' : 'Pokaż rozwiązanie'}
                 </button>
 
                 {showSolutions[task.id] && (
-                  <div className="mt-8 p-8 bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl border-2 border-green-300">
+                  <div className="mt-8 p-8 bg-linear-to-br from-green-50 to-emerald-50 rounded-2xl border-2 border-green-300">
                     <h4 className="text-2xl font-black text-green-800 mb-4">Rozwiązanie:</h4>
                     <div 
                       className="prose prose-lg text-gray-800"

@@ -117,7 +117,7 @@ export default function CourseDetail() {
       const fileExt = file.name.split('.').pop();
       const fileName = `${id}/${lessonId}/${field}-${Date.now()}.${fileExt}`;
 
-      const { error: uploadError, data: uploadData } = await supabase.storage
+      const { error: uploadError } = await supabase.storage
         .from('course-materials')
         .upload(fileName, file, {
           cacheControl: '3600',

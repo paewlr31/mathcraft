@@ -67,7 +67,7 @@ export default function BlogHome() {
 
         {/* Przycisk "Wróć do Home" – tylko jak niezalogowany */}
         {!user && (
-          <div className="bg-gradient-to-r from-purple-700 to-indigo-800 py-6 px-6">
+          <div className="bg-linear-to-br from-purple-700 to-indigo-800 py-6 px-6">
             <button
               onClick={() => navigate('/')}
               className="text-white hover:text-cyan-300 text-lg font-medium flex items-center gap-2 transition"

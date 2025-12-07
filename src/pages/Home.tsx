@@ -1,5 +1,5 @@
 // src/pages/Home.tsx
-import { useState, useRef, useEffect, use } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { ChevronDown, Menu, X, Phone, Mail, Facebook, Instagram, ChevronLeft, ChevronRight, LogOut, ArrowRight } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabaseClient';

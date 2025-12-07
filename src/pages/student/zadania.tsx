@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../../lib/supabaseClient';
 import Sidebar from '../../components/Sidebar';
-import { FileText, Calendar, Download, CheckCircle2, XCircle } from 'lucide-react';
+import { FileText, Calendar, CheckCircle2, XCircle } from 'lucide-react';
 
 interface Submission {
   id: string;
@@ -193,7 +193,7 @@ export default function Zadania() {
                       rel="noopener noreferrer"
                       className="flex items-start gap-4 flex-1"
                     >
-                      <FileText className="w-12 h-12 text-blue-600 flex-shrink-0" />
+                      <FileText className="w-12 h-12 text-blue-600 shrink-0" />
                       <div className="min-w-0">
                         <p className="font-semibold text-lg text-gray-800 break-all">{s.file_name}</p>
                         <p className="text-gray-600 mt-1">

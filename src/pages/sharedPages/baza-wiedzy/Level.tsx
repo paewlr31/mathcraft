@@ -30,7 +30,7 @@ export default function LevelPage() {
   }, [levelSlug]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-yellow-800 via-yellow-600 to-orange-600 py-16 px-6">
+    <div className="min-h-screen bg-linear-to-br from-yellow-800 via-yellow-600 to-orange-600 py-16 px-6">
       <div className="max-w-5xl mx-auto">
         {/* PRZYCISK POWRÓT */}
         <button

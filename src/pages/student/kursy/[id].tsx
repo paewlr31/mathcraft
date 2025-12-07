@@ -10,7 +10,7 @@ import {
   Calendar,
   Upload,
   CheckCircle,
-  X,
+  
 } from 'lucide-react';
 
 interface Lesson {

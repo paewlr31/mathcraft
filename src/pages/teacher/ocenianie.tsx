@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { supabase } from '../../lib/supabaseClient';
 import { Link } from 'react-router-dom';
 import Sidebar from '../../components/Sidebar';
-import { User, FileText, Calendar, ArrowRight, Files } from 'lucide-react';
+import { User, FileText, ArrowRight, Files } from 'lucide-react';
 import { CheckSquare } from 'lucide-react';
 
 interface Submission {
@@ -108,7 +108,7 @@ export default function Ocenianie() {
             {/* TEN SAM BOX CO W INNE STRONY – IDENTYCZNY STYL */}
           <div className="bg-white shadow rounded-2xl p-6 sm:p-8 mb-10">
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5">
-              <CheckSquare className="w-12 h-12 text-green-600 flex-shrink-0" />
+              <CheckSquare className="w-12 h-12 text-green-600 shrink-0" />
               <div>
                 <h1 className="text-3xl sm:text-4xl font-bold text-blue-700">
                   Ocenianie zadań domowych
@@ -139,11 +139,11 @@ export default function Ocenianie() {
                     {/* Nagłówek z uczniem – klikalny */}
                     <Link
                       to={`/teacher/uczen/${studentId}`}
-                      className="block p-5 sm:p-6 hover:bg-gradient-to-r hover:from-blue-50 hover:to-purple-50 transition-all"
+                      className="block p-5 sm:p-6 hover:bg-linear-to-r hover:from-blue-50 hover:to-purple-50 transition-all"
                     >
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-4">
-                          <div className="w-12 h-12 sm:w-14 sm:h-14 bg-blue-100 rounded-full rounded-full flex items-center justify-center">
+                          <div className="w-12 h-12 sm:w-14 sm:h-14 bg-blue-100 rounded-full flex items-center justify-center">
                             <User className="w-7 h-7 sm:w-8 sm:h-8 text-blue-600" />
                           </div>
                           <div>
@@ -155,7 +155,7 @@ export default function Ocenianie() {
                             </p>
                           </div>
                         </div>
-                        <ArrowRight className="w-7 h-7 text-blue-600 flex-shrink-0" />
+                        <ArrowRight className="w-7 h-7 text-blue-600 shrink-0" />
                       </div>
                     </Link>
 
@@ -170,7 +170,7 @@ export default function Ocenianie() {
                             rel="noopener noreferrer"
                             className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition text-sm border border-gray-200"
                           >
-                            <FileText className="w-5 h-5 text-blue-600 flex-shrink-0" />
+                            <FileText className="w-5 h-5 text-blue-600 shrink-0" />
                             <div className="min-w-0 flex-1">
                               <p className="font-medium text-gray-600 truncate">{task.file_name}</p>
                               <p className="text-xs text-gray-500 truncate">

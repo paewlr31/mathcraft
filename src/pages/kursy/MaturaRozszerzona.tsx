@@ -23,7 +23,7 @@ export default function MaturaRozszerzona() {
         <img
           src="https://images.unsplash.com/photo-1526379095098-d400fd0bf935?q=80&w=1400"
           alt="Kurs matematyka rozszerzona online"
-          className="w-full rounded-3xl shadow-2xl object-cover aspect-[4/3] lg:aspect-auto lg:h-full"
+          className="w-full rounded-3xl shadow-2xl object-cover aspect-4/3 lg:aspect-auto lg:h-full"
         />
       </div>
 
@@ -59,7 +59,7 @@ export default function MaturaRozszerzona() {
             "Bezpłatna lekcja próbna"
           ].map((item, i) => (
             <div key={i} className="flex items-center gap-4 justify-center lg:justify-start">
-              <div className="bg-red-800 text-white rounded-full p-2 flex-shrink-0">
+              <div className="bg-red-800 text-white rounded-full p-2 shrink-0">
                 <Check size={20} />
               </div>
               <span className="text-lg font-medium text-gray-800">{item}</span>
@@ -128,7 +128,7 @@ export default function MaturaRozszerzona() {
   </div>
 
           {/* Kontakt – w pełni responsywny, piękny na mobile */}
-<div className="bg-gradient-to-r from-red-800 to-red-900 text-white p-8 md:p-12 rounded-3xl text-center">
+<div className="bg-linear-to-r from-red-800 to-red-900 text-white p-8 md:p-12 rounded-3xl text-center">
   <h3 className="text-3xl md:text-4xl font-black mb-8">Masz pytania? Odezwij się!</h3>
   
   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-2xl mx-auto">
@@ -137,7 +137,7 @@ export default function MaturaRozszerzona() {
       href="tel:+48889599088"
       className="flex flex-col sm:flex-row items-center justify-center gap-4 bg-white/10 hover:bg-white/20 px-8 py-6 rounded-2xl transition-all duration-300 transform hover:scale-105"
     >
-      <Phone size={40} className="flex-shrink-0" />
+      <Phone size={40} className="shrink-0" />
       <div className="text-center sm:text-left">
         <p className="font-bold text-xl">Zadzwoń</p>
         <p className="text-lg opacity-95">+48 889 599 088</p>
@@ -149,7 +149,7 @@ export default function MaturaRozszerzona() {
       href="mailto:kontakt.mathcraft@gmail.com"
       className="flex flex-col sm:flex-row items-center justify-center gap-4 bg-white/10 hover:bg-white/20 px-8 py-6 rounded-2xl transition-all duration-300 transform hover:scale-105"
     >
-      <Mail size={40} className="flex-shrink-0" />
+      <Mail size={40} className="shrink-0" />
       <div className="text-center sm:text-left">
         <p className="font-bold text-xl">Napisz</p>
         <p className="text-lg opacity-95">kontakt.mathcraft@gmail.com</p>

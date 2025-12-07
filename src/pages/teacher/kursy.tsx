@@ -145,7 +145,8 @@ export default function KursyTeacher() {
                 <button
                   key={course.id}
                   onClick={() => navigate(`/teacher/kursy/${course.id}`)}
-                  className="bg-white rounded-2xl shadow-xl p-8 text-left hover:shadow-2xl hover:scale-105 transition-all duration-300 border-4 border-purple-500 group text-center sm:text-left"
+                  // ładny kartonik z kursami??
+                  className="bg-white rounded-2xl shadow-xl p-8 hover:shadow-2xl hover:scale-105 transition-all duration-300 border-4 border-purple-500 group text-center sm:text-left"
                 >
                   <h2 className="text-2xl font-bold text-purple-700 mb-6 line-clamp-2">
                     {course.title}
@@ -153,15 +154,15 @@ export default function KursyTeacher() {
 
                   <div className="space-y-4 text-gray-600">
                     <div className="flex items-center justify-center sm:justify-start gap-3">
-                      <Calendar className="w-6 h-6 text-indigo-600 flex-shrink-0" />
+                      <Calendar className="w-6 h-6 text-indigo-600 shrink-0" />
                       <span className="font-medium">{course.lessons_count} lekcji</span>
                     </div>
                     <div className="flex items-center justify-center sm:justify-start gap-3">
-                      <Users className="w-6 h-6 text-green-600 flex-shrink-0" />
+                      <Users className="w-6 h-6 text-green-600 shrink-0" />
                       <span className="font-medium">{course.students_count} uczniów</span>
                     </div>
                     <div className="flex items-center justify-center sm:justify-start gap-3">
-                      <Users className="w-6 h-6 text-blue-600 flex-shrink-0" />
+                      <Users className="w-6 h-6 text-blue-600 shrink-0" />
                       <span className="font-medium">{course.teachers_count} nauczycieli</span>
                     </div>
                   </div>

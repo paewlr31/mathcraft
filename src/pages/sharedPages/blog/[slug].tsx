@@ -73,7 +73,7 @@ export default function BlogPost() {
       loading="lazy"
     />
     {/* Elegancki gradient od dołu – wygląda jak z Medium / Notion */}
-    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
+    <div className="absolute inset-0 bg-linear-to-br from-black/50 via-transparent to-transparent pointer-events-none" />
   </div>
 )}
         <h1 className="text-6xl font-bold text-purple-800 mt-10">{post.title}</h1>

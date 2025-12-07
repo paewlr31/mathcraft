@@ -246,11 +246,11 @@ export default function KursyAdmin() {
 
                   {/* Nagłówek kursu */}
                   <div
-                    className="bg-gradient-to-r from-indigo-600 to-purple-700 text-white p-5 sm:p-6 cursor-pointer flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 hover:from-indigo-700 hover:to-purple-800 transition"
+                    className="bg-linear-to-r from-indigo-600 to-purple-700 text-white p-5 sm:p-6 cursor-pointer flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 hover:from-indigo-700 hover:to-purple-800 transition"
                     onClick={() => setOpenCourseId(openCourseId === course.id ? null : course.id)}
                   >
                     <div className="flex-1">
-                      <h2 className="text-2xl sm:text-3xl font-bold break-words pr-8">{course.title}</h2>
+                      <h2 className="text-2xl sm:text-3xl font-bold wrap-break-word pr-8">{course.title}</h2>
                       <p className="text-base sm:text-lg opacity-90 mt-2">
                         {course.lessons.length} lekcji • {course.enrollments.filter(e => e.role === 'TEACHER').length} nauczycieli •{' '}
                         {course.enrollments.filter(e => e.role === 'STUDENT').length} uczniów

@@ -82,7 +82,7 @@ export default function Michal() {
                   alt="Michał Nowak – król matury rozszerzonej"
                   className="w-full max-w-lg mx-auto rounded-3xl shadow-2xl object-cover aspect-square"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent rounded-3xl"></div>
+                <div className="absolute inset-0 bg-linear-to-t from-black/70 via-transparent to-transparent rounded-3xl"></div>
                 <div className="absolute bottom-8 left-8 text-white">
                   <p className="text-5xl font-black drop-shadow-2xl">Michał</p>
                   <p className="text-2xl font-bold opacity-95 drop-shadow-lg">Twój klucz do 90–100%</p>
@@ -94,7 +94,7 @@ export default function Michal() {
       </section>
 
       {/* Piekielnie mocny CTA */}
-      <section className="py-20 bg-gradient-to-br from-orange-600 to-red-700">
+      <section className="py-20 bg-linear-to-br from-orange-600 to-red-700">
         <div className="max-w-4xl mx-auto px-6 text-center text-white">
           <h2 className="text-4xl md:text-6xl font-black mb-8">
             Chcesz 90–100% z rozszerzonej?
