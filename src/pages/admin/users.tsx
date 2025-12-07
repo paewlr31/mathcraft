@@ -107,85 +107,89 @@ export default function Users() {
     <div className="flex min-h-screen bg-gray-100">
       <Sidebar user={user} role={currentUserRole} onLogout={handleLogout} />
 
-      <main className="flex-1 p-6 md:ml-64">
-        <div className="bg-white shadow rounded-lg p-6 md:p-8">
-          <h1 className="text-3xl font-bold text-blue-700 mb-6">
-            Zarządzanie użytkownikami
-          </h1>
+     <main className="flex-1 p-4 sm:p-6">
+  <div className="bg-white shadow rounded-lg p-4 sm:p-6 md:p-8">
+    <h1 className="text-2xl sm:text-3xl font-bold text-blue-700 mb-4 sm:mb-6">
+      <p>
+      Zarządzanie użytkownikami
+      </p>
+    </h1>
 
-          {loading ? (
-            <p className="text-gray-600">Ładowanie użytkowników...</p>
-          ) : profiles.length === 0 ? (
-            <p className="text-center text-gray-500 py-8">
-              Brak użytkowników do wyświetlenia (lub jesteś jedynym adminem).
-            </p>
-          ) : (
-            <div className="overflow-x-auto">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Email
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Rola
-                    </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                      Akcje
-                    </th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
-                  {profiles.map((profile) => (
-                    <tr key={profile.id}>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                        {profile.email}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <span
-                          className={`inline-flex px-3 py-1 text-xs font-semibold rounded-full ${
-                            profile.role === 'TEACHER'
-                              ? 'bg-green-100 text-green-800'
-                              : 'bg-blue-100 text-blue-800'
-                          }`}
-                        >
-                          {profile.role}
-                        </span>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm">
-                        <div className="flex gap-2">
-                          <button
-                            onClick={() => changeRole(profile.id, 'STUDENT')}
-                            disabled={profile.role === 'STUDENT'}
-                            className={`px-4 py-2 rounded text-white text-xs font-medium transition ${
-                              profile.role === 'STUDENT'
-                                ? 'bg-gray-400 cursor-not-allowed'
-                                : 'bg-blue-600 hover:bg-blue-700'
-                            }`}
-                          >
-                            STUDENT
-                          </button>
-                          <button
-                            onClick={() => changeRole(profile.id, 'TEACHER')}
-                            disabled={profile.role === 'TEACHER'}
-                            className={`px-4 py-2 rounded text-white text-xs font-medium transition ${
-                              profile.role === 'TEACHER'
-                                ? 'bg-gray-400 cursor-not-allowed'
-                                : 'bg-indigo-600 hover:bg-indigo-700'
-                            }`}
-                          >
-                            TEACHER
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
-        </div>
-      </main>
+    {loading ? (
+      <p className="text-gray-600">Ładowanie użytkowników...</p>
+    ) : profiles.length === 0 ? (
+      <p className="text-center text-gray-500 py-6 sm:py-8">
+        Brak użytkowników do wyświetlenia (lub jesteś jedynym adminem).
+      </p>
+    ) : (
+      <div className="overflow-x-auto">
+        <table className="min-w-full divide-y divide-gray-200 text-sm sm:text-base">
+          <thead className="bg-gray-50">
+            <tr>
+              <th className="px-3 sm:px-6 py-2 text-left font-medium text-gray-500 uppercase tracking-wider">
+                Email
+              </th>
+              <th className="px-3 sm:px-6 py-2 text-left font-medium text-gray-500 uppercase tracking-wider">
+                Rola
+              </th>
+              <th className="px-3 sm:px-6 py-2 text-left font-medium text-gray-500 uppercase tracking-wider">
+                Akcje
+              </th>
+            </tr>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200">
+            {profiles.map((profile) => (
+              <tr key={profile.id} className="hover:bg-gray-50">
+               <td className="px-3 sm:px-6 py-2 text-gray-500 max-w-[120px] wrap-break-word sm:whitespace-nowrap">
+                {profile.email}
+              </td>
+
+                <td className="px-3 sm:px-6 py-2 whitespace-nowrap">
+                  <span
+                    className={`inline-flex px-2 sm:px-3 py-1 text-xs sm:text-sm font-semibold rounded-full ${
+                      profile.role === 'TEACHER'
+                        ? 'bg-green-100 text-green-800'
+                        : 'bg-blue-100 text-blue-800'
+                    }`}
+                  >
+                    {profile.role}
+                  </span>
+                </td>
+                <td className="px-3 sm:px-6 py-2 whitespace-nowrap text-sm sm:text-base">
+                  <div className="flex flex-wrap gap-2">
+                    <button
+                      onClick={() => changeRole(profile.id, 'STUDENT')}
+                      disabled={profile.role === 'STUDENT'}
+                      className={`px-3 sm:px-4 py-1 sm:py-2 rounded text-white text-xs sm:text-sm font-medium transition ${
+                        profile.role === 'STUDENT'
+                          ? 'bg-gray-400 cursor-not-allowed'
+                          : 'bg-blue-600 hover:bg-blue-700'
+                      }`}
+                    >
+                      STUDENT
+                    </button>
+                    <button
+                      onClick={() => changeRole(profile.id, 'TEACHER')}
+                      disabled={profile.role === 'TEACHER'}
+                      className={`px-3 sm:px-4 py-1 sm:py-2 rounded text-white text-xs sm:text-sm font-medium transition ${
+                        profile.role === 'TEACHER'
+                          ? 'bg-gray-400 cursor-not-allowed'
+                          : 'bg-indigo-600 hover:bg-indigo-700'
+                      }`}
+                    >
+                      TEACHER
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    )}
+  </div>
+</main>
+
     </div>
   );
 }

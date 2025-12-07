@@ -15,7 +15,6 @@ export default function Sidebar({ user, role, onLogout }: SidebarProps) {
   const commonMenu = [
     { name: 'Dashboard', path: '/dashboard' },
     { name: 'Chat', path: '/chat' },
-    { name: 'Umowy', path: '/sharedPages/umowy' },
     { name: 'Przewodnik', path: '/sharedPages/przewodnik' },
     { name: 'Forum', path: '/forum' },
     { name: 'Baza wiedzy', path: '/sharedPages/baza-wiedzy' },
@@ -27,30 +26,20 @@ export default function Sidebar({ user, role, onLogout }: SidebarProps) {
     { name: 'Moje lekcje', path: '/student/lekcje' },
     { name: 'Moje kursy', path: '/student/kursy' },
     { name: 'Zadania domowe', path: '/student/zadania' },
-    { name: 'Arkusze maturalne', path: '/student/arkusze' },
-    { name: 'Najważniejsze zadania', path: '/student/najwazniejsze' }
+ 
   ];
 
   const teacherMenu = [
-    { name: 'Moi uczniowie', path: '/teacher/uczniowie' },
     { name: 'Zarządzanie kursami', path: '/teacher/kursy' },
-    { name: 'Tworzenie i ocenianie zadań', path: '/teacher/ocenianie' },
+    { name: 'Ocenianie zadań', path: '/teacher/ocenianie' },
+    
     { name: 'Kalendarz lekcji', path: '/teacher/kalendarz' },
-    { name: 'Repozytorium materiałów', path: '/teacher/repo' },
     { name: 'Statystyki uczniów', path: '/teacher/statystyki-uczniow' },
-    { name: 'Arkusze', path: '/teacher/arkusze' },
-    { name: 'Najważniejsze zadania', path: '/teacher/najwazniejsze' }
   ];
 
   const adminMenu = [
     { name: 'Zarządzanie użytkownikami', path: '/admin/users' },
     { name: 'Zarządzanie kursami', path: '/admin/kursy' },
-    { name: 'Zarządzanie lekcjami', path: '/admin/lekcje' },
-    { name: 'Finanse', path: '/admin/finanse' },
-    { name: 'Statystyki globalne', path: '/admin/statystyki-globalne' },
-    { name: 'Moderacja forum', path: '/admin/forum' },
-    { name: 'Moderacja materiałów', path: '/admin/materialy' },
-    { name: 'Ustawienia systemowe', path: '/admin/system' }
   ];
 
   const getMenu = () => {
@@ -103,12 +92,14 @@ export default function Sidebar({ user, role, onLogout }: SidebarProps) {
               key={item.path}
               to={item.path}
               className={`block px-4 py-2 rounded text-gray-800 hover:bg-blue-100 transition
-                ${location.pathname === item.path ? 'bg-blue-200 font-semibold' : ''}`}
-              onClick={() => setIsOpen(false)} // zamyka menu po kliknięciu na mobile
+                ${location.pathname === item.path || location.pathname.startsWith(item.path + '/') ? 'bg-blue-200 font-semibold' : ''}`}
+              
+                onClick={() => setIsOpen(false)} // zamyka menu po kliknięciu na mobile
             >
               {item.name}
             </Link>
-          ))}
+
+            ))}
         </nav>
 
         <button

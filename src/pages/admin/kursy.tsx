@@ -402,116 +402,135 @@ export default function KursyAdmin() {
 
       {/* MODAL – teraz naprawdę responsywny */}
       {showCreateModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50 p-4 overflow-y-auto">
-          <div className="bg-white rounded-3xl shadow-2xl w-full max-w-4xl mx-auto my-8 overflow-y-auto max-h-screen">
-            <div className="p-6 sm:p-8 lg:p-10">
-              <h2 className="text-3xl sm:text-4xl font-bold text-blue-800 mb-8 text-center">Nowy kurs</h2>
+  <div className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50 p-4 overflow-y-auto">
+    <div className="bg-white rounded-3xl shadow-2xl w-full sm:max-w-3xl md:max-w-4xl mx-auto my-8 overflow-y-auto max-h-screen">
+      <div className="p-4 sm:p-6 lg:p-8">
+        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-blue-800 mb-6 sm:mb-8 text-center">
+          Nowy kurs
+        </h2>
 
+        <input
+          type="text"
+          placeholder="Tytuł kursu"
+          value={newCourseTitle}
+          onChange={e => setNewCourseTitle(e.target.value)}
+          className="w-full sm:w-full border-2 text-gray-500 border-indigo-400 rounded-xl px-4 py-3 mb-6 sm:mb-8 focus:outline-none focus:border-indigo-600 text-lg sm:text-xl"
+        />
+
+        {/* Lekcje */}
+        <div className="mb-6 text-gray-500 sm:mb-10 space-y-4">
+          {newLessons.map((lesson, i) => (
+            <div key={lesson.id} className="flex flex-col sm:flex-row items-start sm:items-center gap-3 w-full">
+              <span className="font-bold text-indigo-700 text-center sm:text-left w-full sm:w-32">
+                Lekcja {i + 1}
+              </span>
               <input
                 type="text"
-                placeholder="Tytuł kursu"
-                value={newCourseTitle}
-                onChange={e => setNewCourseTitle(e.target.value)}
-                className="w-full border-4 text-gray-500 border-indigo-400 rounded-xl px-6 py-5 text-2xl mb-8 focus:outline-none focus:border-indigo-600"
+                value={lesson.title}
+                onChange={e =>
+                  setNewLessons(prev =>
+                    prev.map(l => (l.id === lesson.id ? { ...l, title: e.target.value } : l))
+                  )
+                }
+                className="flex-1 w-full border-2 border-gray-300 rounded-lg px-4 py-2"
               />
-
-              {/* Lekcje w modalu */}
-              <div className="mb-10">
-                <h3 className="text-2xl text-gray-500 font-bold mb-6">Lekcje ({newLessons.length})</h3>
-                <div className="space-y-4">
-                  {newLessons.map((lesson, i) => (
-                    <div
-                      key={lesson.id}
-                      className="flex flex-col text-gray-500 sm:flex-row items-start sm:items-center gap-4 bg-gray-50 p-5 rounded-xl"
-                    >
-                      <span className="font-bold text-indigo-700 min-w-24 text-center sm:text-left">
-                        Lekcja {i + 1}
-                      </span>
-                      <input
-                        type="text"
-                        value={lesson.title}
-                        onChange={e => setNewLessons(prev => prev.map(l => l.id === lesson.id ? { ...l, title: e.target.value } : l))}
-                        className="flex-1 border-2 border-gray-300 rounded-lg px-4 py-3 w-full"
-                      />
-                      <button
-                        onClick={() => setNewLessons(prev => prev.filter(l => l.id !== lesson.id))}
-                        className="text-red-600 self-end sm:self-center"
-                      >
-                        <Trash2 className="w-6 h-6" />
-                      </button>
-                    </div>
-                  ))}
-                </div>
-                <button
-                  onClick={() => setNewLessons(prev => [...prev, { id: Date.now().toString(), lesson_number: prev.length + 1, title: `Lekcja ${prev.length + 1}` }])}
-                  className="mt-6 w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-xl font-bold flex items-center justify-center gap-3"
-                >
-                  <Plus className="w-6 h-6" /> Dodaj lekcję
-                </button>
-              </div>
-
-              {/* Uczestnicy w modalu */}
-              <div className="mb-10">
-                <h3 className="text-2xl text-gray-500 font-bold mb-6">Uczestnicy</h3>
-                <div className="flex flex-wrap gap-4 mb-8">
-                  <button
-                    onClick={() => setUserFilter('TEACHER')}
-                    className={`px-8 py-4 rounded-xl font-bold text-lg ${userFilter === 'TEACHER' ? 'bg-indigo-600 text-white' : 'bg-gray-300'}`}
-                  >
-                    Nauczyciele
-                  </button>
-                  <button
-                  
-                    onClick={() => setUserFilter('STUDENT')}
-                    className={`px-8 py-4 rounded-xl font-bold text-lg ${userFilter === 'STUDENT' ? 'bg-blue-600 text-white' : 'bg-gray-300'}`}
-                  >
-                    Uczniowie
-                  </button>
-                </div>
-
-                <div className="max-h-96 overflow-y-auto border-4 border-gray-300 rounded-xl p-6">
-                  {(userFilter === 'TEACHER' ? allTeachers : allStudents).map(u => (
-                    <label
-                      key={u.id}
-                      className="flex items-center text-gray-500 gap-4 py-4 border-b last:border-0 hover:bg-gray-50 cursor-pointer"
-                    >
-                      <input
-                        type="checkbox"
-                        checked={userFilter === 'TEACHER' ? selectedTeachers.includes(u.id) : selectedStudents.includes(u.id)}
-                        onChange={e => {
-                          if (userFilter === 'TEACHER') {
-                            setSelectedTeachers(prev => e.target.checked ? [...prev, u.id] : prev.filter(id => id !== u.id));
-                          } else {
-                            setSelectedStudents(prev => e.target.checked ? [...prev, u.id] : prev.filter(id => id !== u.id));
-                          }
-                        }}
-                        className="w-6 h-6 text-indigo-600 rounded"
-                      />
-                      <span className="text-lg font-medium break-all">{u.email}</span>
-                    </label>
-                  ))}
-                </div>
-              </div>
-
-              {/* Przyciski modalu */}
-              <div className="flex flex-col sm:flex-row-reverse gap-4 mt-10">
-                <button
-                  onClick={createNewCourse}
-                  className="w-full sm:w-auto bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-12 rounded-xl text-2xl shadow-lg"
-                >
-                  Utwórz kurs
-                </button>
-                <button
-                  onClick={() => setShowCreateModal(false)}
-                  className="w-full sm:w-auto px-10 text-gray-500 py-4 border-4 border-gray-400 rounded-xl font-bold text-xl hover:bg-gray-100"
-                >
-                  Anuluj
-                </button>
-              </div>
+              <button
+                onClick={() => setNewLessons(prev => prev.filter(l => l.id !== lesson.id))}
+                className="text-red-600 self-start sm:self-center mt-2 sm:mt-0"
+              >
+                <Trash2 className="w-5 h-5" />
+              </button>
             </div>
+          ))}
+          <button
+            onClick={() =>
+              setNewLessons(prev => [
+                ...prev,
+                { id: Date.now().toString(), lesson_number: prev.length + 1, title: `Lekcja ${prev.length + 1}` }
+              ])
+            }
+            className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 rounded-xl font-bold flex items-center justify-center gap-2"
+          >
+            <Plus className="w-4 h-4" /> Dodaj lekcję
+          </button>
+        </div>
+
+        {/* Uczestnicy */}
+        <div className="mb-6 sm:mb-10">
+          <div className="flex flex-wrap gap-2 mb-4">
+            <button
+              onClick={() => setUserFilter('TEACHER')}
+              className={`px-4 py-2 rounded-lg font-bold text-sm sm:text-base ${
+                userFilter === 'TEACHER' ? 'bg-indigo-600 text-white' : 'bg-gray-300'
+              }`}
+            >
+              Nauczyciele
+            </button>
+            <button
+              onClick={() => setUserFilter('STUDENT')}
+              className={`px-4 py-2 rounded-lg font-bold text-sm sm:text-base ${
+                userFilter === 'STUDENT' ? 'bg-blue-600 text-white' : 'bg-gray-300'
+              }`}
+            >
+              Uczniowie
+            </button>
+          </div>
+
+          <div className="max-h-72 sm:max-h-96 overflow-y-auto border-2 border-gray-300 rounded-xl p-4">
+            {(userFilter === 'TEACHER' ? allTeachers : allStudents).map(u => (
+              <label
+                key={u.id}
+                className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 sm:gap-4 py-2 border-b last:border-0 w-full"
+              >
+                <div className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    checked={
+                      userFilter === 'TEACHER'
+                        ? selectedTeachers.includes(u.id)
+                        : selectedStudents.includes(u.id)
+                    }
+                    onChange={e => {
+                      if (userFilter === 'TEACHER') {
+                        setSelectedTeachers(prev =>
+                          e.target.checked ? [...prev, u.id] : prev.filter(id => id !== u.id)
+                        );
+                      } else {
+                        setSelectedStudents(prev =>
+                          e.target.checked ? [...prev, u.id] : prev.filter(id => id !== u.id)
+                        );
+                      }
+                    }}
+                    className="w-5 h-5 text-indigo-600 rounded"
+                  />
+                  <span className="text-gray-700 wrap-break-word">{u.email}</span>
+                </div>
+              </label>
+            ))}
           </div>
         </div>
-      )}
+
+        {/* Przyciski */}
+        <div className="flex flex-col sm:flex-row-reverse gap-2 sm:gap-4 mt-4 sm:mt-8">
+          <button
+            onClick={createNewCourse}
+            className="w-full sm:w-auto bg-green-600 hover:bg-green-700 text-white font-bold py-3 sm:py-4 px-6 rounded-xl"
+          >
+            Utwórz kurs
+          </button>
+          <button
+            onClick={() => setShowCreateModal(false)}
+            className="w-full sm:w-auto border-2 border-gray-400 text-gray-700 font-bold py-3 sm:py-4 px-6 rounded-xl hover:bg-gray-100"
+          >
+            Anuluj
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+)}
+
+     
     </div>
   );
 }

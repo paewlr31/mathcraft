@@ -98,6 +98,13 @@ export default function AddPost() {
   return (
     <div className="min-h-screen bg-gray-50 py-12">
       <div className="max-w-5xl mx-auto px-6">
+          <button
+            type="button"
+            onClick={() => navigate('/blog')}
+            className="mb-6 text-purple-600 hover:text-purple-800 font-medium transition flex items-center gap-2"
+          >
+            ← Wróć do bloga
+          </button>
         <div className="bg-white text-gray-700 rounded-2xl shadow-xl p-8 md:p-12">
           <h1 className="text-4xl font-bold  text-purple-800 mb-8">
             Dodaj nowy wpis na bloga

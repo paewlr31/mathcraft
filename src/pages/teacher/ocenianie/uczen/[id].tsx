@@ -1,8 +1,8 @@
 // src/pages/teacher/uczen/[id].tsx
 import { useEffect, useState } from 'react';
-import { supabase } from '../../../lib/supabaseClient';
+import { supabase } from '../../../../lib/supabaseClient';
 import { useParams, Link } from 'react-router-dom';
-import Sidebar from '../../../components/Sidebar';
+import Sidebar from '../../../../components/Sidebar';
 import { ArrowLeft, FileText, Calendar, User, Download, Edit2, Check, X } from 'lucide-react';
 
 interface Submission {
@@ -10,14 +10,12 @@ interface Submission {
   file_name: string;
   file_url: string;
   created_at: string;
-  // Removed incorrect property definition
   course_id: string;
   lesson_id: string | null;
   course_title: string;
   lesson_number: number;
   lesson_title: string;
   max_points: number;
-
   grade?: {
     points_given: number;
     points_possible: number;
@@ -31,8 +29,7 @@ export default function StudentHomework() {
   const [studentEmail, setStudentEmail] = useState('');
   const [tasks, setTasks] = useState<Submission[]>([]);
   const [loading, setLoading] = useState(true);
-  
-  // Tryb edycji/oceniania
+
   const [editingId, setEditingId] = useState<string | null>(null);
   const [pointsGiven, setPointsGiven] = useState('');
   const [feedback, setFeedback] = useState('');
@@ -74,11 +71,7 @@ export default function StudentHomework() {
 
       const courseMap = Object.fromEntries(courses?.map(c => [c.id, c.title]) || []);
       const lessonMap = Object.fromEntries(
-        lessons?.map(l => [l.id, {
-          number: l.lesson_number,
-          title: l.title,
-          max_points: l.max_homework_points || 10
-        }]) || []
+        lessons?.map(l => [l.id, { number: l.lesson_number, title: l.title, max_points: l.max_homework_points || 10 }]) || []
       );
       const gradeMap = Object.fromEntries(grades?.map(g => [g.submission_id, g]) || []);
 
@@ -97,6 +90,9 @@ export default function StudentHomework() {
       }));
 
       enriched.sort((a, b) => {
+        const aUngraded = !a.grade || typeof (a.grade as any).points_given !== 'number';
+        const bUngraded = !b.grade || typeof (b.grade as any).points_given !== 'number';
+        if (aUngraded !== bUngraded) return aUngraded ? -1 : 1;
         if (a.course_title !== b.course_title) return a.course_title.localeCompare(b.course_title);
         if (a.lesson_number !== b.lesson_number) return a.lesson_number - b.lesson_number;
         return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
@@ -148,39 +144,20 @@ export default function StudentHomework() {
     setFeedback(task.grade.feedback || '');
   };
 
-  // === STATYSTYKI (bez zmian) ===
   const statsByLesson = tasks.reduce((acc, t) => {
     if (!t.lesson_id) return acc;
     const key = `${t.course_id}-${t.lesson_id}`;
-    if (!acc[key]) {
-      acc[key] = {
-        course: t.course_title,
-        lesson: `${t.lesson_number}. ${t.lesson_title}`,
-        points: 0,
-        max: 0,
-        count: 0
-      };
-    }
-    if (t.grade) {
-      acc[key].points += t.grade.points_given;
-      acc[key].max += t.grade.points_possible;
-    } else {
-      acc[key].max += t.max_points;
-    }
+    if (!acc[key]) acc[key] = { course: t.course_title, lesson: `${t.lesson_number}. ${t.lesson_title}`, points: 0, max: 0, count: 0 };
+    if (t.grade) { acc[key].points += t.grade.points_given; acc[key].max += t.grade.points_possible; } 
+    else acc[key].max += t.max_points;
     acc[key].count += 1;
     return acc;
   }, {} as Record<string, any>);
 
   const statsByCourse = tasks.reduce((acc, t) => {
-    if (!acc[t.course_id]) {
-      acc[t.course_id] = { title: t.course_title, points: 0, max: 0 };
-    }
-    if (t.grade) {
-      acc[t.course_id].points += t.grade.points_given;
-      acc[t.course_id].max += t.grade.points_possible;
-    } else {
-      acc[t.course_id].max += t.max_points;
-    }
+    if (!acc[t.course_id]) acc[t.course_id] = { title: t.course_title, points: 0, max: 0 };
+    if (t.grade) { acc[t.course_id].points += t.grade.points_given; acc[t.course_id].max += t.grade.points_possible; } 
+    else acc[t.course_id].max += t.max_points;
     return acc;
   }, {} as Record<string, any>);
 
@@ -193,7 +170,6 @@ export default function StudentHomework() {
   return (
     <div className="flex min-h-screen bg-gray-100">
       <Sidebar user={null} role="TEACHER" onLogout={() => supabase.auth.signOut()} />
-
       <main className="flex-1 p-4 sm:p-6 md:ml-64">
         <div className="max-w-5xl mx-auto">
 
@@ -240,7 +216,7 @@ export default function StudentHomework() {
           <div className="space-y-4">
             {tasks.map(task => (
               <div key={task.id} className="bg-white rounded-xl shadow hover:shadow-xl transition p-5 border border-gray-200">
-                <div className="flex items-start justify-between gap-4">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 w-full">
                   <a href={task.file_url} target="_blank" rel="noopener noreferrer" className="flex-1 flex items-start gap-4">
                     <FileText className="w-10 h-10 text-blue-600 shrink-0" />
                     <div className="min-w-0">
@@ -254,35 +230,35 @@ export default function StudentHomework() {
                     <Download className="w-6 h-6 text-gray-400" />
                   </a>
 
-                  <div className="text-right ml-4">
-                    {/* Tryb edycji (po kliknięciu ołówka lub "Oceń") */}
+                  <div className="text-right mt-2 sm:mt-0">
                     {editingId === task.id ? (
-                      <div className="flex items-center gap-2">
+                      <div className="flex flex-col sm:flex-row sm:items-center gap-2 w-full">
                         <input
                           type="number"
                           min="0"
                           max={task.max_points}
                           value={pointsGiven}
                           onChange={(e) => setPointsGiven(e.target.value)}
-                          className="w-20 px-3 text-gray-600 py-2 border rounded-lg text-center"
+                          className="w-full sm:w-20 px-3 text-gray-600 py-2 border rounded-lg text-center"
                           autoFocus
                         />
                         <textarea
                           placeholder="Komentarz (opcjonalny)"
                           value={feedback}
                           onChange={(e) => setFeedback(e.target.value)}
-                          className="text-sm text-gray-600 border rounded px-2 py-1"
+                          className="w-full sm:w-auto text-sm text-gray-600 border rounded px-2 py-1"
                           rows={2}
                         />
-                        <button onClick={() => handleGradeOrUpdate(task.id)} className="text-green-600">
-                          <Check className="w-5 h-5" />
-                        </button>
-                        <button onClick={() => { setEditingId(null); setPointsGiven(''); setFeedback(''); }} className="text-red-600">
-                          <X className="w-5 h-5" />
-                        </button>
+                        <div className="flex gap-2 mt-2 sm:mt-0">
+                          <button onClick={() => handleGradeOrUpdate(task.id)} className="text-green-600">
+                            <Check className="w-5 h-5" />
+                          </button>
+                          <button onClick={() => { setEditingId(null); setPointsGiven(''); setFeedback(''); }} className="text-red-600">
+                            <X className="w-5 h-5" />
+                          </button>
+                        </div>
                       </div>
                     ) : task.grade ? (
-                      /* Już ocenione – tylko pokaż i daj możliwość edycji */
                       <div className="flex items-center gap-3">
                         <div>
                           <p className="text-bold text-2xl text-green-600">
@@ -302,7 +278,6 @@ export default function StudentHomework() {
                         </button>
                       </div>
                     ) : (
-                      /* Nieocenione – przycisk Oceń */
                       <button
                         onClick={() => {
                           setEditingId(task.id);

@@ -138,7 +138,7 @@ export default function Ocenianie() {
                   >
                     {/* Nagłówek z uczniem – klikalny */}
                     <Link
-                      to={`/teacher/uczen/${studentId}`}
+                      to={`/teacher/ocenianie/uczen/${studentId}`}
                       className="block p-5 sm:p-6 hover:bg-linear-to-r hover:from-blue-50 hover:to-purple-50 transition-all"
                     >
                       <div className="flex items-center justify-between">
